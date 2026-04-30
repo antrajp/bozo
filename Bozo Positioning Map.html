@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bozo — Positioning Maps</title>
+<style>
+  :root {
+    --bg: #f5efe4;
+    --bg2: #ede6d8;
+    --bg3: #e6ddd0;
+    --border: rgba(0,0,0,0.10);
+    --border-mid: rgba(0,0,0,0.18);
+    --text: #1a1814;
+    --text-dim: #5a5248;
+    --text-dimmer: #9a9088;
+    --bozo: #b83a1e;
+    --bozo-dim: rgba(184,58,30,0.10);
+    --blue: #2a5f9e;
+    --green: #2d7a58;
+    --amber: #8a5e10;
+    --gray: #706860;
+    --accent: #8a5e10;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 28px 40px 24px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .header-left { display: flex; align-items: baseline; gap: 24px; }
+  .brand-name {
+    letter-spacing: .08em;
+    font-weight: 400;
+    font-size: 13px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .doc-title {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 300;
+    letter-spacing: 0;
+  }
+  .header-meta {
+    letter-spacing: .08em;
+    font-size: 10px;
+    color: var(--text-dimmer);
+    letter-spacing: .06em;
+  }
+
+  /* INTRO */
+  .intro {
+    padding: 40px 40px 0;
+    max-width: 680px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 36px;
+  }
+  .intro h1 {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.35;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  .intro p {
+    font-size: 13.5px;
+    color: var(--text-dim);
+    line-height: 1.75;
+    max-width: 600px;
+  }
+
+  /* LEGEND */
+  .legend-bar {
+    padding: 18px 40px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .legend-label {
+    letter-spacing: .08em;
+    font-size: 9px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    margin-right: 4px;
+  }
+  .leg-items { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+  .leg-item { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--text-dim); }
+  .leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* MAIN LAYOUT */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    min-height: calc(100vh - 180px);
+  }
+
+  /* MAPS COLUMN */
+  .maps-col {
+    padding: 40px;
+    border-right: 1px solid var(--border);
+  }
+  .maps-col > * + * { margin-top: 60px; }
+
+  /* MAP SECTION */
+  .map-section {}
+  .map-header { margin-bottom: 20px; }
+  .map-num {
+    letter-spacing: .08em;
+    font-size: 9px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    margin-bottom: 6px;
+  }
+  .map-title {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .map-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.65;
+    max-width: 560px;
+  }
+
+  /* MAP CANVAS */
+  .map-canvas {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 0.78;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .map-canvas::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  .ax-h {
+    position: absolute;
+    left: 6%; right: 6%; top: 50%;
+    height: 1px;
+    background: var(--border-mid);
+  }
+  .ax-v {
+    position: absolute;
+    top: 6%; bottom: 6%; left: 50%;
+    width: 1px;
+    background: var(--border-mid);
+  }
+  .ax-label {
+    position: absolute;
+    letter-spacing: .08em;
+    font-size: 8.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    white-space: nowrap;
+  }
+  .ax-left  { left: 2%; top: 50%; transform: translateY(-50%); }
+  .ax-right { right: 2%; top: 50%; transform: translateY(-50%); text-align: right; }
+  .ax-top   { top: 1.5%; left: 50%; transform: translateX(-50%); }
+  .ax-bottom{ bottom: 1.5%; left: 50%; transform: translateX(-50%); }
+
+  /* BRAND POINTS */
+  .pt {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    z-index: 10;
+  }
+  .pt .dot {
+    border-radius: 50%;
+    width: 8px; height: 8px;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform .15s ease, opacity .15s ease;
+  }
+  .pt:hover .dot { transform: translate(-50%, -50%) scale(1.6); }
+  .pt .lbl {
+    position: absolute;
+    font-size: 9px;
+    font-weight: 400;
+    white-space: nowrap;
+    line-height: 1.2;
+    pointer-events: none;
+    transition: opacity .15s;
+  }
+
+  .pt-bozo .dot { width: 12px; height: 12px; background: var(--bozo); box-shadow: 0 0 8px rgba(184,58,30,.25); }
+  .pt-bozo .lbl { color: var(--bozo); font-weight: 500; font-size: 10px; }
+  .pt-a .dot { background: var(--blue); opacity: .8; }
+  .pt-a .lbl { color: var(--blue); opacity: .85; }
+  .pt-b .dot { background: var(--green); opacity: .8; }
+  .pt-b .lbl { color: var(--green); opacity: .85; }
+  .pt-c .dot { background: var(--amber); opacity: .8; }
+  .pt-c .lbl { color: var(--amber); opacity: .85; }
+  .pt-d .dot { background: var(--gray); opacity: .7; }
+  .pt-d .lbl { color: var(--gray); opacity: .8; }
+  .pt-r .dot { background: transparent; border: 1.5px dashed var(--gray); opacity: .6; }
+  .pt-r .lbl { color: var(--gray); opacity: .65; font-style: italic; }
+
+  /* TOOLTIP */
+  .tooltip {
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .12s ease;
+    max-width: 260px;
+  }
+  .tooltip.visible { opacity: 1; }
+  .tooltip-inner {
+    background: #f0e9dc;
+    border: 1px solid var(--border-mid);
+    padding: 12px 14px;
+  }
+  .tt-name {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tt-cat {
+    letter-spacing: .08em;
+    font-size: 8px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+  .tt-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+  .tt-why {
+    font-size: 10.5px;
+    color: var(--text-dimmer);
+    line-height: 1.55;
+    border-top: 1px solid var(--border);
+    padding-top: 7px;
+    font-style: italic;
+  }
+
+  .cat-bozo { background: var(--bozo-dim); color: var(--bozo); }
+  .cat-a { background: rgba(91,143,212,.12); color: var(--blue); }
+  .cat-b { background: rgba(74,158,122,.12); color: var(--green); }
+  .cat-c { background: rgba(192,136,48,.12); color: var(--amber); }
+  .cat-d { background: rgba(106,104,96,.12); color: var(--gray); }
+  .cat-r { background: rgba(106,104,96,.08); color: var(--gray); }
+
+  /* DIVIDER between maps */
+  .map-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 60px 0 0;
+  }
+
+  /* NOTES PANEL */
+  .notes-col {
+    display: flex;
+    flex-direction: column;
+  }
+  .notes-header {
+    padding: 24px 24px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .notes-title {
+    letter-spacing: .08em;
+    font-size: 9px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+  }
+  .notes-clear {
+    font-size: 10px;
+    color: var(--text-dimmer);
+    background: none;
+    border: none;
+    cursor: pointer;
+    
+    padding: 2px 6px;
+    border-radius: 2px;
+    transition: color .15s;
+  }
+  .notes-clear:hover { color: var(--text); }
+
+  .notes-area {
+    flex: 1;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .notes-prompt {
+    font-size: 11.5px;
+    color: var(--text-dimmer);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  .note-entry {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+    position: relative;
+  }
+  .note-meta {
+    letter-spacing: .08em;
+    font-size: 8.5px;
+    color: var(--text-dimmer);
+    margin-bottom: 5px;
+    letter-spacing: .04em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .note-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-dimmer);
+    font-size: 11px;
+    padding: 0;
+    line-height: 1;
+    transition: color .15s;
+  }
+  .note-delete:hover { color: var(--bozo); }
+  .note-text {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.65;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .note-input-wrap {
+    border-top: 1px solid var(--border);
+    padding: 16px 24px 20px;
+  }
+  .note-input {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.6;
+    resize: vertical;
+    min-height: 80px;
+    padding: 10px 12px;
+    outline: none;
+    transition: border-color .15s;
+  }
+  .note-input::placeholder { color: var(--text-dimmer); }
+  .note-input:focus { border-color: var(--border-mid); }
+  .note-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+    gap: 8px;
+    align-items: center;
+  }
+  .note-hint {
+    font-size: 10px;
+    color: var(--text-dimmer);
+    flex: 1;
+  }
+  .btn-add {
+    background: none;
+    border: 1px solid var(--border-mid);
+    color: var(--text);
+    
+    font-size: 11px;
+    font-weight: 400;
+    padding: 6px 14px;
+    cursor: pointer;
+    letter-spacing: .04em;
+    transition: border-color .15s, color .15s;
+  }
+  .btn-add:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* CONTEXT BOX — key tensions */
+  .context-box {
+    margin: 0 40px 40px;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .ctx-item {}
+  .ctx-label {
+    letter-spacing: .08em;
+    font-size: 8.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    margin-bottom: 5px;
+  }
+  .ctx-text {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .main { grid-template-columns: 1fr; }
+    .notes-col { border-top: 1px solid var(--border); }
+    header { flex-direction: column; gap: 6px; }
+    .maps-col { padding: 24px 20px; }
+    .intro { padding: 24px 20px; }
+    .legend-bar { padding: 14px 20px; }
+    .context-box { margin: 0 20px 40px; } .ctx-items { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <span class="brand-name">Bozo</span>
+    <span class="doc-title">Brand Positioning — Landscape Maps</span>
+  </div>
+  <span class="header-meta">Prepared by Antra合同会社 · April 2026</span>
+</header>
+
+<div class="intro">
+  <h1>Where does Bozo sit in this landscape — and where could it go?</h1>
+  <p>Four maps across different axes: heritage depth, maker proximity, cultural specificity, and craft visibility. Each brand is placed based on research. Bozo is marked in red. Hover any point to read the rationale. Use the notes panel to capture observations during the review.</p>
+</div>
+
+<div class="legend-bar">
+  <span class="legend-label">Key</span>
+  <div class="leg-items">
+    <div class="leg-item"><div class="leg-dot" style="background:var(--bozo)"></div>Bozo</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--blue);opacity:.8"></div>Material / craft anchor</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--green);opacity:.8"></div>Heritage-led</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--amber);opacity:.8"></div>Concept-led</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--gray);opacity:.7"></div>Reference brand</div>
+    <div class="leg-item"><div class="leg-dot" style="background:transparent;border:1.5px dashed var(--gray);"></div>Reference point (store / collector)</div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="maps-col" id="maps-col"></div>
+
+  <div class="notes-col">
+    <div class="notes-header">
+      <span class="notes-title">Session Notes</span>
+      <button class="notes-clear" onclick="clearNotes()">Clear all</button>
+    </div>
+    <div class="notes-area" id="notes-area">
+      <p class="notes-prompt">Use this space to capture observations, tensions, or decisions that come up during the review.</p>
+    </div>
+    <div class="note-input-wrap">
+      <textarea class="note-input" id="note-input" placeholder="Add a note…"></textarea>
+      <div class="note-actions">
+        <span class="note-hint">⌘↵ to add</span>
+        <button class="btn-add" onclick="addNote()">Add note</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="context-box">
+  <div class="ctx-heading">Positioning summary</div>
+  <div class="ctx-items">
+    <div class="ctx-item">
+      <div class="ctx-label">Heritage &amp; legibility</div>
+      <div class="ctx-text">Bozo's heritage is real — not constructed. A generational story, a family production base in Fez, a material vocabulary that predates the brand's current form. That depth is rare in this landscape. The strategic work is translation: making it legible on first contact, so buyers can hold the story, not just touch the leather.</div>
+    </div>
+    <div class="ctx-item">
+      <div class="ctx-label">Maker proximity</div>
+      <div class="ctx-text">Production in Fez is a maker-proximity asset that most designer brands at this price point cannot claim. Unlike brands that have to construct an artisanal narrative retrospectively, Bozo's closeness to its making is structural. That closeness should be central to the brand proposition, not held in reserve.</div>
+    </div>
+    <div class="ctx-item">
+      <div class="ctx-label">Cultural position</div>
+      <div class="ctx-text">The Morocco–Paris–Japan triangle is a position nobody in this landscape occupies. Moroccan origin, Parisian address, Japanese market pull — each axis is genuine, not chosen for effect. The question is whether to name this triangulation explicitly or let the garments carry it. Either way, the specificity is the asset.</div>
+    </div>
+    <div class="ctx-item">
+      <div class="ctx-label">Craft &amp; price</div>
+      <div class="ctx-text">Material quality is confirmed at the point of touch — buyers acknowledge it. At designer price, that quality needs a frame: a reason the price feels inevitable rather than asserted. Brands like Visvim, Taiga Takahashi, and Gajiroc occupy this same quadrant. All of them lead with story before they lead with garment.</div>
+    </div>
+  </div>
+</div>
+
+<div id="tooltip" class="tooltip"><div class="tooltip-inner"><div class="tt-name" id="tt-name"></div><div class="tt-desc" id="tt-desc"></div><div class="tt-why" id="tt-why"></div></div></div>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+
+const BOZO_MAP_DESC = {
+  '01': {
+    desc: 'Leather and denim made in Fez, with a generational family story reaching back to Armand\'s original Paris brand. The heritage is real and deep — most brands in this landscape invented theirs. The opportunity is making that depth readable on first contact.',
+    why: 'Bozo\'s heritage is genuine, not constructed — a rare asset. The work is translation, not fabrication.',
+  },
+  '02': {
+    desc: 'Production rooted in a family workshop in Fez — close to the maker, with direct knowledge of the craft traditions. The brand is building commercial ambition through the Paris showroom and Japanese market focus, without scaling away from its production base.',
+    why: 'The Fez production story is a maker-proximity asset that most designer brands at this price point can\'t claim. It should be central, not background.',
+  },
+  '03': {
+    desc: 'Moroccan origin, Paris address, Japanese market pull — a triangulated cultural identity that nobody else in this landscape occupies. Armand\'s heritage from Fez, Noam\'s relaunch in Paris, the romantic pull toward Japan: this is specific and multi-directional in a way that resists easy categorisation.',
+    why: 'Cultural specificity with genuine geographic ambition is rare. The triangle isn\'t a complication — it\'s the proposition, if it can be made legible.',
+  },
+  '04': {
+    desc: 'Leather and denim at designer price, with material quality that buyers acknowledge immediately on touch. The craft is visible in the material itself — in handfeel, construction, finish — rather than in decorative gesture. At this price point, that quality needs a story to carry the weight.',
+    why: 'The material quality is confirmed by the market. What it lacks is the narrative frame that makes the price feel inevitable rather than asserted.',
+  },
+};
+
+const BRANDS = {
+  'Bozo': {
+    cls: 'pt-bozo', cat: 'bozo', catLabel: 'Bozo',
+  },
+  'The Row': {
+    cls: 'pt-d', cat: 'd', catLabel: 'Reference brand',
+    desc: 'Mary-Kate and Ashley Olsen, 2006. The commercial standard-bearer for quiet luxury. No logo, extreme fabric obsession, Italian and French production.',
+    why: 'Benchmarks what "quality without explanation" looks like at full commercial scale — and how long it took to get there.',
+  },
+  'Visvim': {
+    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
+    desc: 'Tokyo, 2000. Hiroki Nakamura. Japanese craft meets global material archaeology — American workwear, Native American traditions, Andean textiles, Japanese dyeing. Very high price point.',
+    why: 'The template for how cultural specificity + global reach can coexist. The brand Bozo is most structurally similar to — but Visvim has 25 years of story behind it.',
+  },
+  'Auralee': {
+    cls: 'pt-a', cat: 'a', catLabel: 'Material / craft anchor',
+    desc: 'Tokyo, 2015. Ryota Iwai. Every collection starts with bespoke fabric development. Described as what\'s replaced The Row for cognoscenti. Recently showed at Paris MFW.',
+    why: 'Shows that fabric-first with no heritage story can reach major commercial scale — if the material language is extraordinary and consistent.',
+  },
+  'A.Presse': {
+    cls: 'pt-a', cat: 'a', catLabel: 'Material / craft anchor',
+    desc: 'Tokyo, 2021. Kazuma Shigematsu calls himself an "editor," not a designer. Vintage Americana/French/Japanese sources. Sells out day-of. Hypebeast Best New Brand 2025. No online shop.',
+    why: 'Proof that a brand with no distinctive identity — deliberately "no worldview" — can become fashion\'s most talked-about label purely through material and fit precision.',
+  },
+  'Taiga Takahashi': {
+    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
+    desc: 'NY/Kyoto, 2017. Founder died at 27 in 2022; brand continues. Archaeological approach to pre-mass-production American vintage, reinterpreted through Japanese craft — natural dyes, antique looms.',
+    why: 'The closest structural analogue to Bozo\'s position. Genuine material depth + cultural specificity + a legible founding story. The gap is that T.T\'s concept was fully articulated from day one.',
+  },
+  'Niceness': {
+    cls: 'pt-a', cat: 'a', catLabel: 'Material / craft anchor',
+    desc: 'Tokyo, 2017. Yuichi Goh. Principle: "just good is good." Wildly eclectic range held together by material obsession. ~80 stockists. 10-person team operating with the output of a fashion house.',
+    why: 'Shows that eclecticism works when the underlying commitment is unambiguous. Bozo\'s black leather focus is more singular — which is an asset, not a limitation.',
+  },
+  'Heugn': {
+    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
+    desc: 'Tokyo, 2019. Named from yūgen (幽玄) — profound and mysterious beauty. Pursues the gap between tradition and the present through simple, high-quality tailoring designed to be passed between generations.',
+    why: 'A quiet Japanese brand that has built genuine aesthetic integrity through consistent philosophy. Demonstrates that the "heirloom garment" narrative can sustain a brand.',
+  },
+  'Conkers': {
+    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
+    desc: 'London, 2021. Oliver Warner (ex-Studio Nicholson, Our Legacy). British countryside heritage — farmer shirts, waxed outerwear — from UK mills. Each piece hand-stamped with production number.',
+    why: 'A useful parallel: cultural specificity (rural Britain) made legible through story, material sourcing transparency, and community language. Buyers understand immediately what they\'re buying into.',
+  },
+  'Oliver Church': {
+    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
+    desc: 'Paris, 2020. New Zealander Oliver Church. Every garment designed, cut, sewn, embroidered, naturally dyed by Church personally. Antique French deadstock, 50–150 years old. ~20 pieces/month.',
+    why: 'The extreme end of maker-proximity. What Bozo\'s Fez production story could approach in language, if not in method — the personal, traceable, singular garment.',
+  },
+  'Senui Shirt': {
+    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
+    desc: 'Tokyo (Setagaya), 2022. Hiroyuki Kato. One-person operation. Every shirt uses the senui (背縫い) back-seam technique from kimono construction. Cotton thread, vintage-spec machines, 22 stitches/30mm.',
+    why: 'Shows that a single technical gesture — one construction detail with a cultural name and meaning — can become an entire brand proposition.',
+  },
+  'Salon C. Lundman': {
+    cls: 'pt-a', cat: 'a', catLabel: 'Material / craft anchor',
+    desc: 'Stockholm, 2023. Christoffer Lundman (ex-Burberry, Acne, Tiger of Sweden). Precise tailoring with Scandinavian restraint and intellectual wit. Picked up DSM London, Biotop Tokyo in first Paris showing.',
+    why: 'Demonstrates that a new brand with strong conceptual clarity and craft — but no "heritage" per se — can land top-tier accounts in its first season. The lesson: legibility matters more than age.',
+  },
+  'Gabriela Coll': {
+    cls: 'pt-c', cat: 'c', catLabel: 'Concept-led',
+    desc: 'Barcelona. Fine arts background, Mediterranean roots. Releases in "Series" not seasons — now on Series 15. Seasonless; garments designed to accumulate into a biography over time.',
+    why: 'A model for how a brand can structure its output to communicate permanence. The "series" format and the "permanent wardrobe" language directly addresses the buyer question: why buy this?',
+  },
+  'Lea Boberg': {
+    cls: 'pt-c', cat: 'c', catLabel: 'Concept-led',
+    desc: 'London, 2020. Danish-born, RCA-trained, ex-Casely-Hayford. Oversized tailored suits, soft silhouettes, partly made-to-measure. Explicitly small — "collections only for people within my immediate circle."',
+    why: 'Shows that radical smallness can be a brand statement rather than a limitation. The anti-wholesale posture creates desire.',
+  },
+  'Nahyat': {
+    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
+    desc: 'Tokyo, 2017. Former Yohji Yamamoto knitwear director Masahiko Yoda. ~10 sweaters/year, made-to-order, one size. Orders taken once yearly at invitation-only events. No wholesale, no online store.',
+    why: 'The furthest possible reduction of commercial model — and it works precisely because the material obsession is so complete. An extreme that clarifies what "material-led" actually means.',
+  },
+  'Gajiroc': {
+    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
+    desc: 'Seoul, 2022. Gi Tae, trained under Evan Kinori. One-man operation. Cuts every pattern himself, sources in Japan and Italy, sells to one store per city regardless of demand. FW26: 30 pieces.',
+    why: 'Structurally very close to where Bozo currently sits — strong material conviction, small scale, Paris showroom, Japanese buyer targets. A mirror of the early-stage journey.',
+  },
+  'Bibliotherk': {
+    cls: 'pt-c', cat: 'c', catLabel: 'Concept-led',
+    desc: 'Japan. Ryunosuke Hata, born Buenos Aires, raised Shibuya and Amsterdam. Name merges Bibliothek (German: library) with his initial R. German workwear details, military references, "ennui human image."',
+    why: 'Demonstrates that a complex multicultural biography can become a brand language — but only when the cultural references are made specific and legible, not left abstract.',
+  },
+  'Vuja Dé': {
+    cls: 'pt-c', cat: 'c', catLabel: 'Concept-led',
+    desc: 'Tokyo, est. ~2018, now on 11th season. Founded by Ken Ijima. "Refined essentialism and utilitarian nuance." Workwear and military archetypes, merging local fabric traditions with artisanship.',
+    why: 'A quiet brand that has built consistent season-by-season identity without loud communication. Shows that restraint in brand language can accumulate into recognition.',
+  },
+  'Luke Derrick': {
+    cls: 'pt-a', cat: 'a', catLabel: 'Material / craft anchor',
+    desc: 'London. CSM BA + MA. Trained at Savile Row, Brioni, Alexander McQueen. Pragmatic tailoring — "getting away with it" dressing. Hainsworth cloth, Japanese nylon taffeta. On LFW schedule.',
+    why: 'Useful comparison for how tailoring heritage can be repositioned around wearability and modern life rather than formality. The "declassified" luxury approach.',
+  },
+  'De Dam Foundation': {
+    cls: 'pt-d', cat: 'd', catLabel: 'Reference brand',
+    desc: 'Amsterdam, 2022. Korean-born, Dutch-based designer John Ro. Dutch lifestyle as design philosophy — modular, genderless, foundational items. The dam as structural metaphor.',
+    why: 'An emerging brand at a similar stage to Bozo — building from a cultural origin story with modest commercial infrastructure. Useful for understanding where independent brands start.',
+  },
+  'Au Concours': {
+    cls: 'pt-d', cat: 'd', catLabel: 'Reference brand',
+    desc: 'London, 2023. Christopher Smith, New Zealand-born. "Born from the excessive." Motorsport and material as DNA — car culture channelled into leather and denim. Discord-built following, now heading to Paris MFW.',
+    why: 'Shares Bozo\'s leather/denim focus and pre-wholesale stage. Useful mirror for how a specific, unlikely cultural reference (motorsport) can become brand identity before scale.',
+  },
+  'Les Six': {
+    cls: 'pt-c', cat: 'c', catLabel: 'Concept-led',
+    desc: 'Tottori Prefecture, Japan. Ryohei Kawanishi (CSM/Parsons, ex-Landlord NY). Collective + concept store in twin Taisho-era warehouses. Mingei furniture, art library, open workshop. Rejects "lifestyle" — uses i-shoku-ju.',
+    why: 'The most extreme version of geographic specificity-as-brand-identity. A useful extreme to consider: what would it mean for Bozo to be this rooted in Fez specifically?',
+  },
+  'Final Layer Berlin': {
+    cls: 'pt-r', cat: 'r', catLabel: 'Reference point',
+    desc: 'Prenzlauer Allee, Berlin. Archive and designer vintage store. Featured in Ginza Magazine Tokyo. Running a YouTube show "@ the store." A taste-setting operation for how archival appreciation is aestheticised.',
+    why: 'A reference for the cultural moment: the buyers who respond to Bozo\'s leather will likely have passed through stores like this. Understanding their eye is understanding the audience.',
+  },
+  'Files London': {
+    cls: 'pt-r', cat: 'r', catLabel: 'Reference point',
+    desc: 'East London, appointment-only. Curated designer archive vintage — CDG, 90s Chanel, Stone Island, Gaultier, Prada rarities. 105K followers.',
+    why: 'Shows how the vintage-as-luxury market thinks about quality and provenance. The buyers who visit Files have developed an eye for material and construction that is exactly Bozo\'s target audience.',
+  },
+  'Kakko Tokyo': {
+    cls: 'pt-r', cat: 'r', catLabel: 'Reference point',
+    desc: 'Tokyo. A store and art direction space. Art director Eve Lantana works across styling and spatial design. The space merges architecture thinking with object curation.',
+    why: 'Represents the taste formation happening in Tokyo that informs what Japanese buyers respond to. The crossover of clothing and spatial sensibility.',
+  },
+};
+
+// ─── MAPS ─────────────────────────────────────────────────────────────────────
+
+const MAPS = [
+  {
+    num: '01', title: 'Heritage depth vs. brand legibility',
+    desc: 'How historically rooted is the brand\'s identity — and how clearly does it communicate that to a buyer seeing it for the first time?',
+    axLeft: 'Shallow heritage', axRight: 'Deep heritage', axTop: 'Legible', axBottom: 'Opaque',
+    points: [
+      { name: 'Bozo', x: 72, y: 28 },
+      { name: 'The Row', x: 40, y: 82 },
+      { name: 'Visvim', x: 88, y: 55 },
+      { name: 'Auralee', x: 35, y: 72, lp: 'ur' },
+      { name: 'A.Presse', x: 55, y: 62, lp: 'dr' },
+      { name: 'Taiga Takahashi', x: 90, y: 45, lp: 'ul' },
+      { name: 'Niceness', x: 48, y: 50 },
+      { name: 'Heugn', x: 62, y: 38 },
+      { name: 'Conkers', x: 82, y: 68, lp: 'ul' },
+      { name: 'Oliver Church', x: 78, y: 32, lp: 'ul' },
+      { name: 'Senui Shirt', x: 85, y: 22 },
+      { name: 'Salon C. Lundman', x: 28, y: 75, lp: 'dr' },
+      { name: 'Gabriela Coll', x: 50, y: 35, lp: 'ul' },
+      { name: 'Lea Boberg', x: 22, y: 55 },
+      { name: 'Nahyat', x: 42, y: 18 },
+      { name: 'Gajiroc', x: 58, y: 30 },
+      { name: 'Bibliotherk', x: 38, y: 22, lp: 'ul' },
+      { name: 'Vuja Dé', x: 30, y: 40 },
+      { name: 'Luke Derrick', x: 42, y: 65, lp: 'dr' },
+      { name: 'De Dam Foundation', x: 18, y: 42 },
+      { name: 'Au Concours', x: 25, y: 28 },
+      { name: 'Les Six', x: 80, y: 22, lp: 'ul' },
+      { name: 'Files London', x: 72, y: 75, lp: 'ul' },
+      { name: 'Final Layer Berlin', x: 68, y: 68 },
+      { name: 'Kakko Tokyo', x: 45, y: 30 },
+    ]
+  },
+  {
+    num: '02', title: 'Maker proximity vs. commercial ambition',
+    desc: 'How close is the garment to a single maker\'s hands — and how wide is the brand\'s market reach or ambition?',
+    axLeft: 'Industrial / scaled', axRight: 'Singular maker', axTop: 'Wide reach / ambitious', axBottom: 'Narrow / intentional',
+    points: [
+      { name: 'Bozo', x: 68, y: 52 },
+      { name: 'The Row', x: 20, y: 90 },
+      { name: 'Visvim', x: 55, y: 72 },
+      { name: 'Auralee', x: 28, y: 82 },
+      { name: 'A.Presse', x: 32, y: 70, lp: 'dl' },
+      { name: 'Taiga Takahashi', x: 62, y: 58, lp: 'ul' },
+      { name: 'Niceness', x: 25, y: 60 },
+      { name: 'Heugn', x: 38, y: 38 },
+      { name: 'Conkers', x: 70, y: 42, lp: 'ul' },
+      { name: 'Oliver Church', x: 96, y: 20, lp: 'ul' },
+      { name: 'Senui Shirt', x: 94, y: 14, lp: 'ul' },
+      { name: 'Salon C. Lundman', x: 30, y: 68, lp: 'dr' },
+      { name: 'Gabriela Coll', x: 72, y: 32, lp: 'ul' },
+      { name: 'Lea Boberg', x: 80, y: 28 },
+      { name: 'Nahyat', x: 88, y: 15, lp: 'ul' },
+      { name: 'Gajiroc', x: 90, y: 22 },
+      { name: 'Bibliotherk', x: 20, y: 35 },
+      { name: 'Vuja Dé', x: 22, y: 42 },
+      { name: 'Luke Derrick', x: 35, y: 55, lp: 'dr' },
+      { name: 'De Dam Foundation', x: 50, y: 25 },
+      { name: 'Au Concours', x: 75, y: 20, lp: 'ul' },
+      { name: 'Les Six', x: 65, y: 15, lp: 'ul' },
+    ]
+  },
+  {
+    num: '03', title: 'Cultural specificity vs. geographic ambition',
+    desc: 'How rooted is the brand in a specific place or culture — and how far does it reach or intend to reach?',
+    axLeft: 'Culturally neutral', axRight: 'Culturally specific', axTop: 'Global reach', axBottom: 'Local / intentionally narrow',
+    points: [
+      { name: 'Bozo', x: 75, y: 52 },
+      { name: 'The Row', x: 20, y: 92 },
+      { name: 'Visvim', x: 85, y: 78, lp: 'ul' },
+      { name: 'Auralee', x: 65, y: 82, lp: 'ul' },
+      { name: 'A.Presse', x: 60, y: 68, lp: 'ul' },
+      { name: 'Taiga Takahashi', x: 88, y: 55, lp: 'ul' },
+      { name: 'Niceness', x: 55, y: 62, lp: 'dr' },
+      { name: 'Heugn', x: 72, y: 40 },
+      { name: 'Conkers', x: 82, y: 45, lp: 'ul' },
+      { name: 'Oliver Church', x: 70, y: 25, lp: 'ul' },
+      { name: 'Senui Shirt', x: 90, y: 18, lp: 'ul' },
+      { name: 'Salon C. Lundman', x: 35, y: 72, lp: 'dr' },
+      { name: 'Gabriela Coll', x: 68, y: 35 },
+      { name: 'Lea Boberg', x: 30, y: 48 },
+      { name: 'Nahyat', x: 78, y: 15, lp: 'ul' },
+      { name: 'Gajiroc', x: 62, y: 42 },
+      { name: 'Bibliotherk', x: 55, y: 28, lp: 'ul' },
+      { name: 'Vuja Dé', x: 45, y: 38 },
+      { name: 'Luke Derrick', x: 38, y: 58, lp: 'dr' },
+      { name: 'De Dam Foundation', x: 50, y: 30 },
+      { name: 'Au Concours', x: 42, y: 32, lp: 'ul' },
+      { name: 'Les Six', x: 92, y: 22, lp: 'ul' },
+      { name: 'Final Layer Berlin', x: 60, y: 55, lp: 'dr' },
+      { name: 'Files London', x: 35, y: 65, lp: 'dr' },
+    ]
+  },
+  {
+    num: '04', title: 'Craft visibility vs. price point',
+    desc: 'Does the handwork and process announce itself in the garment — and what price tier does the brand occupy?',
+    axLeft: 'Entry / contemporary price', axRight: 'Designer / luxury price', axTop: 'Craft visible / announced', axBottom: 'Craft absorbed / invisible',
+    points: [
+      { name: 'Bozo', x: 75, y: 72 },
+      { name: 'The Row', x: 92, y: 25, lp: 'ul' },
+      { name: 'Visvim', x: 82, y: 78, lp: 'ul' },
+      { name: 'Auralee', x: 60, y: 35, lp: 'ul' },
+      { name: 'A.Presse', x: 52, y: 42 },
+      { name: 'Taiga Takahashi', x: 72, y: 82, lp: 'ul' },
+      { name: 'Niceness', x: 55, y: 55, lp: 'dr' },
+      { name: 'Heugn', x: 48, y: 48 },
+      { name: 'Conkers', x: 58, y: 85, lp: 'ul' },
+      { name: 'Oliver Church', x: 62, y: 92, lp: 'ul' },
+      { name: 'Senui Shirt', x: 44, y: 90 },
+      { name: 'Salon C. Lundman', x: 65, y: 40, lp: 'dr' },
+      { name: 'Gabriela Coll', x: 50, y: 60, lp: 'ul' },
+      { name: 'Lea Boberg', x: 55, y: 65 },
+      { name: 'Nahyat', x: 58, y: 88, lp: 'ul' },
+      { name: 'Gajiroc', x: 68, y: 80, lp: 'ul' },
+      { name: 'Bibliotherk', x: 40, y: 35 },
+      { name: 'Vuja Dé', x: 60, y: 38 },
+      { name: 'Luke Derrick', x: 58, y: 55, lp: 'dr' },
+      { name: 'De Dam Foundation', x: 30, y: 45 },
+      { name: 'Au Concours', x: 50, y: 62, lp: 'ul' },
+      { name: 'Les Six', x: 62, y: 72 },
+    ]
+  }
+];
+
+// ─── RENDER MAPS ──────────────────────────────────────────────────────────────
+
+function safe(v, mn=6, mx=94) { return Math.min(mx, Math.max(mn, v)); }
+
+function buildMap(mapDef) {
+  const section = document.createElement('div');
+  section.className = 'map-section';
+
+  section.innerHTML = `
+    <div class="map-header">
+      <div class="map-num">Map ${mapDef.num}</div>
+      <div class="map-title">${mapDef.title}</div>
+      <div class="map-desc">${mapDef.desc}</div>
+    </div>
+    <div class="map-canvas">
+      <div class="ax-h"></div>
+      <div class="ax-v"></div>
+      <div class="ax-label ax-left">${mapDef.axLeft}</div>
+      <div class="ax-label ax-right">${mapDef.axRight}</div>
+      <div class="ax-label ax-top">${mapDef.axTop}</div>
+      <div class="ax-label ax-bottom">${mapDef.axBottom}</div>
+    </div>
+  `;
+
+  const canvas = section.querySelector('.map-canvas');
+
+  mapDef.points.forEach(pt => {
+    const brand = BRANDS[pt.name];
+    if (!brand) return;
+
+    const el = document.createElement('div');
+    el.className = 'pt ' + brand.cls;
+    el.style.left = safe(pt.x) + '%';
+    el.style.top = safe(100 - pt.y) + '%';
+
+    const dot = document.createElement('div');
+    dot.className = 'dot';
+    el.appendChild(dot);
+
+    const lbl = document.createElement('div');
+    lbl.className = 'lbl';
+    lbl.textContent = pt.name;
+
+    const lp = pt.lp || 'ur';
+    if (lp === 'ur') { lbl.style.left = '11px'; lbl.style.bottom = '10px'; }
+    else if (lp === 'ul') { lbl.style.right = '11px'; lbl.style.bottom = '10px'; lbl.style.textAlign = 'right'; }
+    else if (lp === 'dr') { lbl.style.left = '11px'; lbl.style.top = '10px'; }
+    else { lbl.style.right = '11px'; lbl.style.top = '10px'; lbl.style.textAlign = 'right'; }
+
+    el.appendChild(lbl);
+
+    el.addEventListener('mouseenter', e => showTooltip(e, pt.name, brand, mapDef.num));
+    el.addEventListener('mousemove', e => moveTooltip(e));
+    el.addEventListener('mouseleave', hideTooltip);
+
+    canvas.appendChild(el);
+  });
+
+  return section;
+}
+
+const mapsCol = document.getElementById('maps-col');
+MAPS.forEach((mapDef, i) => {
+  if (i > 0) {
+    const div = document.createElement('div');
+    div.className = 'map-divider';
+    mapsCol.appendChild(div);
+  }
+  mapsCol.appendChild(buildMap(mapDef));
+});
+
+// ─── TOOLTIP ─────────────────────────────────────────────────────────────────
+
+const tooltip = document.getElementById('tooltip');
+const ttName = document.getElementById('tt-name');
+const ttDesc = document.getElementById('tt-desc');
+const ttWhy  = document.getElementById('tt-why');
+
+function showTooltip(e, name, brand, mapNum) {
+  const catLabels = { bozo: 'Bozo', a: 'Material / craft anchor', b: 'Heritage-led', c: 'Concept-led', d: 'Reference brand', r: 'Reference point' };
+  const catLabel = catLabels[brand.cat] || '';
+
+  ttName.innerHTML = `${name} <span class="tt-cat cat-${brand.cat}">${catLabel}</span>`;
+
+  let desc = brand.desc || '';
+  let why = brand.why || '';
+
+  if (brand.cat === 'bozo' && mapNum && BOZO_MAP_DESC[mapNum]) {
+    desc = BOZO_MAP_DESC[mapNum].desc;
+    why = BOZO_MAP_DESC[mapNum].why;
+  }
+
+  ttDesc.textContent = desc;
+  if (why) {
+    ttWhy.textContent = why;
+    ttWhy.style.display = 'block';
+  } else {
+    ttWhy.style.display = 'none';
+  }
+
+  tooltip.classList.add('visible');
+  moveTooltip(e);
+}
+
+function moveTooltip(e) {
+  const pad = 14;
+  const tw = 270;
+  const th = tooltip.offsetHeight || 120;
+  let x = e.clientX + pad;
+  let y = e.clientY - th / 2;
+
+  if (x + tw > window.innerWidth - 10) x = e.clientX - tw - pad;
+  if (y < 10) y = 10;
+  if (y + th > window.innerHeight - 10) y = window.innerHeight - th - 10;
+
+  tooltip.style.left = x + 'px';
+  tooltip.style.top  = y + 'px';
+}
+
+function hideTooltip() {
+  tooltip.classList.remove('visible');
+}
+
+// ─── NOTES ───────────────────────────────────────────────────────────────────
+
+let notes = JSON.parse(localStorage.getItem('bozo-notes') || '[]');
+
+function renderNotes() {
+  const area = document.getElementById('notes-area');
+  const prompt = area.querySelector('.notes-prompt');
+
+  area.querySelectorAll('.note-entry').forEach(n => n.remove());
+
+  if (notes.length === 0) {
+    if (prompt) prompt.style.display = 'block';
+    return;
+  }
+  if (prompt) prompt.style.display = 'none';
+
+  notes.forEach((note, i) => {
+    const entry = document.createElement('div');
+    entry.className = 'note-entry';
+    entry.innerHTML = `
+      <div class="note-meta">
+        <span>${note.time}</span>
+        <button class="note-delete" onclick="deleteNote(${i})">×</button>
+      </div>
+      <div class="note-text">${note.text}</div>
+    `;
+    area.appendChild(entry);
+  });
+}
+
+function addNote() {
+  const input = document.getElementById('note-input');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const now = new Date();
+  const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  notes.push({ text: escHtml(text), time });
+  localStorage.setItem('bozo-notes', JSON.stringify(notes));
+  input.value = '';
+  renderNotes();
+
+  const area = document.getElementById('notes-area');
+  area.scrollTop = area.scrollHeight;
+}
+
+function deleteNote(i) {
+  notes.splice(i, 1);
+  localStorage.setItem('bozo-notes', JSON.stringify(notes));
+  renderNotes();
+}
+
+function clearNotes() {
+  if (!notes.length) return;
+  if (confirm('Clear all notes?')) {
+    notes = [];
+    localStorage.setItem('bozo-notes', JSON.stringify(notes));
+    renderNotes();
+  }
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+document.getElementById('note-input').addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') addNote();
+});
+
+renderNotes();
+</script>
+</body>
+</html>
