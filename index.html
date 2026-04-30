@@ -45,12 +45,9 @@
   }
   .header-left { display: flex; align-items: baseline; gap: 24px; }
   .brand-name {
-    letter-spacing: .08em;
-    font-weight: 400;
-    font-size: 13px;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: var(--accent);
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--text);
   }
   .doc-title {
     font-size: 13px;
@@ -110,20 +107,34 @@
   /* MAIN LAYOUT */
   .main {
     display: grid;
-    grid-template-columns: 1fr 320px;
-    min-height: calc(100vh - 180px);
+    grid-template-columns: 1fr 300px;
+    height: calc(100vh - var(--top-offset, 120px));
+    position: relative;
   }
 
-  /* MAPS COLUMN */
+  /* MAPS COLUMN — scroll-snap container */
   .maps-col {
-    padding: 40px;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0;
     border-right: 1px solid var(--border);
   }
-  .maps-col > * + * { margin-top: 60px; }
 
-  /* MAP SECTION */
-  .map-section {}
-  .map-header { margin-bottom: 20px; }
+  /* Each map fills the viewport height */
+  .map-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    height: 100%;
+    padding: 32px 40px 24px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .map-divider { display: none; }
+
+  .map-header { margin-bottom: 14px; flex-shrink: 0; }
   .map-num {
     letter-spacing: .08em;
     font-size: 9px;
@@ -149,7 +160,8 @@
   .map-canvas {
     position: relative;
     width: 100%;
-    aspect-ratio: 1 / 0.78;
+    flex: 1;
+    min-height: 0;
     border: 1px solid var(--border);
     background: var(--bg2);
   }
@@ -290,17 +302,22 @@
     margin: 60px 0 0;
   }
 
-  /* NOTES PANEL */
+  /* NOTES PANEL — sticky full height */
   .notes-col {
     display: flex;
     flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100%;
+    overflow: hidden;
   }
   .notes-header {
-    padding: 24px 24px 18px;
+    padding: 20px 20px 14px;
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-shrink: 0;
   }
   .notes-title {
     letter-spacing: .08em;
@@ -324,10 +341,12 @@
 
   .notes-area {
     flex: 1;
-    padding: 20px 24px;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 16px 20px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
   }
   .notes-prompt {
     font-size: 11.5px;
@@ -339,8 +358,9 @@
   .note-entry {
     background: var(--bg3);
     border: 1px solid var(--border);
-    padding: 10px 12px;
+    padding: 9px 10px;
     position: relative;
+    flex-shrink: 0;
   }
   .note-meta {
     letter-spacing: .08em;
@@ -373,7 +393,8 @@
 
   .note-input-wrap {
     border-top: 1px solid var(--border);
-    padding: 16px 24px 20px;
+    padding: 14px 20px 16px;
+    flex-shrink: 0;
   }
   .note-input {
     width: 100%;
@@ -418,39 +439,46 @@
   }
   .btn-add:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* CONTEXT BOX — key tensions */
+  /* POSITIONING SUMMARY */
   .context-box {
-    margin: 0 40px 40px;
-    border: 1px solid var(--border);
-    background: var(--bg2);
-    padding: 20px 24px;
+    padding: 40px 40px 60px;
+    border-top: 1px solid var(--border);
+  }
+  .ctx-heading {
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    margin-bottom: 28px;
+  }
+  .ctx-items {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 36px;
   }
   .ctx-item {}
   .ctx-label {
-    letter-spacing: .08em;
-    font-size: 8.5px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--text-dimmer);
-    margin-bottom: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 10px;
   }
   .ctx-text {
-    font-size: 12px;
+    font-size: 12.5px;
     color: var(--text-dim);
-    line-height: 1.6;
+    line-height: 1.75;
   }
 
   @media (max-width: 900px) {
-    .main { grid-template-columns: 1fr; }
-    .notes-col { border-top: 1px solid var(--border); }
+    .main { grid-template-columns: 1fr; height: auto; }
+    .maps-col { height: 100vh; }
+    .notes-col { position: static; height: auto; border-top: 1px solid var(--border); }
     header { flex-direction: column; gap: 6px; }
-    .maps-col { padding: 24px 20px; }
     .intro { padding: 24px 20px; }
     .legend-bar { padding: 14px 20px; }
-    .context-box { margin: 0 20px 40px; } .ctx-items { grid-template-columns: 1fr 1fr; }
+    .context-box { padding: 32px 20px 48px; }
+    .ctx-items { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .map-section { padding: 24px 20px 16px; }
   }
 </style>
 </head>
@@ -507,19 +535,19 @@
   <div class="ctx-items">
     <div class="ctx-item">
       <div class="ctx-label">Heritage &amp; legibility</div>
-      <div class="ctx-text">Bozo's heritage is real — not constructed. A generational story, a family production base in Fez, a material vocabulary that predates the brand's current form. That depth is rare in this landscape. The strategic work is translation: making it legible on first contact, so buyers can hold the story, not just touch the leather.</div>
+      <div class="ctx-text">Bozo's heritage is real — not constructed. A generational story that begins with Armand in Paris, rooted in Fez, and continues through Noam's relaunch. Most brands in this landscape invented their depth. The work here is translation: making what already exists readable on first contact, so buyers can hold the story, not just touch the leather.</div>
     </div>
     <div class="ctx-item">
-      <div class="ctx-label">Maker proximity</div>
-      <div class="ctx-text">Production in Fez is a maker-proximity asset that most designer brands at this price point cannot claim. Unlike brands that have to construct an artisanal narrative retrospectively, Bozo's closeness to its making is structural. That closeness should be central to the brand proposition, not held in reserve.</div>
+      <div class="ctx-label">Production &amp; proximity</div>
+      <div class="ctx-text">Working in Fez is a return to origin — a personal connection to place and leather tradition, not a manufacturing convenience. That distinction matters. The closeness to the material is earned, which gives it a different weight than brands that simply choose an artisanal production region for positioning purposes.</div>
     </div>
     <div class="ctx-item">
-      <div class="ctx-label">Cultural position</div>
-      <div class="ctx-text">The Morocco–Paris–Japan triangle is a position nobody in this landscape occupies. Moroccan origin, Parisian address, Japanese market pull — each axis is genuine, not chosen for effect. The question is whether to name this triangulation explicitly or let the garments carry it. Either way, the specificity is the asset.</div>
+      <div class="ctx-label">The generational arc</div>
+      <div class="ctx-text">Armand looked to the US the way his generation of makers did — as a source of a certain freedom in form. Noam looks to Japan with the same eyes: different era, different reference, same disposition. That parallel — father and son, each drawn to an outside influence — is the thread that connects the original Bozo to its relaunch. It's a brand built on admiration as method.</div>
     </div>
     <div class="ctx-item">
       <div class="ctx-label">Craft &amp; price</div>
-      <div class="ctx-text">Material quality is confirmed at the point of touch — buyers acknowledge it. At designer price, that quality needs a frame: a reason the price feels inevitable rather than asserted. Brands like Visvim, Taiga Takahashi, and Gajiroc occupy this same quadrant. All of them lead with story before they lead with garment.</div>
+      <div class="ctx-text">Material quality is confirmed at the point of touch. At designer price, that quality needs a frame — a reason the number feels inevitable rather than asserted. Visvim, Taiga Takahashi, Gajiroc: all occupy the same quadrant. All lead with story before garment. The quality is present. The narrative frame is the remaining work.</div>
     </div>
   </div>
 </div>
@@ -531,20 +559,20 @@
 
 const BOZO_MAP_DESC = {
   '01': {
-    desc: 'Leather and denim made in Fez, with a generational family story reaching back to Armand\'s original Paris brand. The heritage is real and deep — most brands in this landscape invented theirs. The opportunity is making that depth readable on first contact.',
-    why: 'Bozo\'s heritage is genuine, not constructed — a rare asset. The work is translation, not fabrication.',
+    desc: 'A generational story reaching back to Armand\'s original Paris brand — rooted in Fez, where the leather and the lineage both originate. Noam\'s relaunch carries that inheritance forward. Most brands in this landscape invented their heritage. Bozo was born into it.',
+    why: 'The depth is real, not constructed. The work is making it readable on first contact.',
   },
   '02': {
-    desc: 'Production rooted in a family workshop in Fez — close to the maker, with direct knowledge of the craft traditions. The brand is building commercial ambition through the Paris showroom and Japanese market focus, without scaling away from its production base.',
-    why: 'The Fez production story is a maker-proximity asset that most designer brands at this price point can\'t claim. It should be central, not background.',
+    desc: 'Production in Fez is the result of a personal connection to place and material tradition — not family infrastructure, but a genuine return to origin. That distinction matters: the closeness is earned, not assumed. It gives the brand access to leather craft that most designer labels can only point at from a distance.',
+    why: 'Maker-proximity rooted in cultural connection rather than family ownership is, if anything, a richer story — it\'s chosen, not inherited.',
   },
   '03': {
-    desc: 'Moroccan origin, Paris address, Japanese market pull — a triangulated cultural identity that nobody else in this landscape occupies. Armand\'s heritage from Fez, Noam\'s relaunch in Paris, the romantic pull toward Japan: this is specific and multi-directional in a way that resists easy categorisation.',
-    why: 'Cultural specificity with genuine geographic ambition is rare. The triangle isn\'t a complication — it\'s the proposition, if it can be made legible.',
+    desc: 'Moroccan origin, Paris address, Japan as a horizon — not a market strategy but a sensibility. Armand looked to the US the way his generation of makers did: as a source of a certain freedom in form. Noam looks to Japan with the same eyes — different era, different influence, same disposition. That parallel is the thread.',
+    why: 'The triangle isn\'t a complication — it\'s the proposition. Few brands can claim a cultural arc that is both deeply specific and genuinely continuous across generations.',
   },
   '04': {
-    desc: 'Leather and denim at designer price, with material quality that buyers acknowledge immediately on touch. The craft is visible in the material itself — in handfeel, construction, finish — rather than in decorative gesture. At this price point, that quality needs a story to carry the weight.',
-    why: 'The material quality is confirmed by the market. What it lacks is the narrative frame that makes the price feel inevitable rather than asserted.',
+    desc: 'Leather and denim at designer price, with material quality that makes itself felt immediately. The craft lives in the material — in weight, handfeel, construction — not in decoration. At this price, that quality needs a frame: a reason the number feels inevitable rather than argued for.',
+    why: 'The quality is acknowledged. The narrative frame is the remaining work.',
   },
 };
 
@@ -860,6 +888,18 @@ function buildMap(mapDef) {
 
   return section;
 }
+
+// Set top-offset so .main fills exactly the remaining viewport height
+function setTopOffset() {
+  const h = document.querySelector('header');
+  const intro = document.querySelector('.intro');
+  const leg = document.querySelector('.legend-bar');
+  const total = (h ? h.offsetHeight : 0) + (intro ? intro.offsetHeight : 0) + (leg ? leg.offsetHeight : 0);
+  document.documentElement.style.setProperty('--top-offset', total + 'px');
+  document.querySelector('.main').style.height = (window.innerHeight - total) + 'px';
+}
+setTopOffset();
+window.addEventListener('resize', setTopOffset);
 
 const mapsCol = document.getElementById('maps-col');
 MAPS.forEach((mapDef, i) => {
