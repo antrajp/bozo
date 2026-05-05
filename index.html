@@ -3,33 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BOZO — Positioning Maps</title>
+<title>BOZO — Working Reference</title>
 <style>
   :root {
-    --bg: #f5efe4;
-    --bg2: #ede6d8;
-    --bg3: #e6ddd0;
-    --border: rgba(0,0,0,0.10);
-    --border-mid: rgba(0,0,0,0.18);
-    --text: #1a1814;
-    --text-dim: #5a5248;
-    --text-dimmer: #9a9088;
-    --bozo: #b83a1e;
-    --bozo-dim: rgba(184,58,30,0.10);
-    --blue: #2a5f9e;
-    --green: #2d7a58;
-    --amber: #8a5e10;
-    --gray: #706860;
-    --accent: #8a5e10;
+    --bg: #f4f1ec;
+    --ink: #1a1a18;
+    --ink2: #5a5750;
+    --ink3: #9a9590;
+    --accent: #1a1a18;
+    --bozo: #c8441a;
+    --border: #d8d4ce;
+    --card: #efefea;
+    --tag-bg: #e8e4de;
+    --now: #c8441a;
+    --target: #2b5c3a;
+    --font: 'Times New Roman', Georgia, serif;
+    --mono: 'Courier New', monospace;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     background: var(--bg);
-    color: var(--text);
-    font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', sans-serif;
-    font-weight: 300;
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 15px;
     line-height: 1.6;
     min-height: 100vh;
   }
@@ -37,448 +35,534 @@
   /* HEADER */
   header {
     border-bottom: 1px solid var(--border);
-    padding: 28px 40px 24px;
+    padding: 28px 40px 20px;
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 20px;
-  }
-  .header-left { display: flex; align-items: baseline; gap: 24px; }
-  .brand-name {
-    font-weight: 500;
-    font-size: 15px;
-    color: var(--text);
-  }
-  .doc-title {
-    font-size: 13px;
-    color: var(--text-dim);
-    font-weight: 300;
-    letter-spacing: 0;
-  }
-  .header-meta {
-    letter-spacing: .08em;
-    font-size: 10px;
-    color: var(--text-dimmer);
-    letter-spacing: .06em;
-  }
-
-  /* INTRO */
-  .intro {
-    padding: 40px 40px 0;
-    max-width: 680px;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 36px;
-  }
-  .intro h1 {
-    font-size: 22px;
-    font-weight: 400;
-    line-height: 1.35;
-    margin-bottom: 14px;
-    color: var(--text);
-  }
-  .intro p {
-    font-size: 13.5px;
-    color: var(--text-dim);
-    line-height: 1.75;
-    max-width: 600px;
-  }
-
-  /* LEGEND */
-  .legend-bar {
-    padding: 18px 40px;
-    display: flex;
     gap: 24px;
-    flex-wrap: wrap;
-    align-items: center;
+  }
+
+  .header-left { display: flex; align-items: baseline; gap: 20px; }
+
+  h1 {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .header-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink3);
+    letter-spacing: 0.06em;
+  }
+
+  .status-pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--bozo);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 2px;
+  }
+
+  /* NAV TABS */
+  nav {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+  }
+
+  .tab {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    padding: 12px 20px 10px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .tab:hover { color: var(--ink); }
+  .tab.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+  /* SECTIONS */
+  .section { display: none; padding: 40px; }
+  .section.active { display: block; }
+
+  /* SECTION TITLES */
+  .section-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 24px;
+    padding-bottom: 10px;
     border-bottom: 1px solid var(--border);
   }
-  .legend-label {
-    letter-spacing: .08em;
-    font-size: 9px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--text-dimmer);
-    margin-right: 4px;
-  }
-  .leg-items { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
-  .leg-item { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--text-dim); }
-  .leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 
-  /* MAIN LAYOUT */
-  .main {
+  /* BRAND PAGE */
+  .brand-body {
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .brand-block {
     display: grid;
-    grid-template-columns: 1fr 300px;
-    height: calc(100vh - var(--top-offset, 120px));
+    grid-template-columns: 160px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .brand-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    padding-top: 3px;
+  }
+
+  .brand-block p {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--ink2);
+  }
+
+  .brand-convergence .brand-label { color: var(--ink); }
+  .brand-convergence p { color: var(--ink); font-size: 16px; }
+
+  /* PLAN SECTION */
+  .timeline {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 0;
+  }
+
+  .tl-block {
+    display: contents;
+  }
+
+  .tl-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--ink3);
+    padding: 20px 24px 20px 0;
+    border-right: 1px solid var(--border);
     position: relative;
   }
 
-  /* MAPS COLUMN — scroll-snap container */
-  .maps-col {
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding: 0;
-    border-right: 1px solid var(--border);
+  .tl-date::after {
+    content: '';
+    position: absolute;
+    right: -4px;
+    top: 26px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--border);
   }
 
-  /* Each map fills the viewport height */
-  .map-section {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    height: 100%;
-    padding: 32px 40px 24px;
-    display: flex;
-    flex-direction: column;
+  .tl-block.urgent .tl-date::after { background: var(--bozo); }
+  .tl-block.key .tl-date::after { background: var(--ink); }
+
+  .tl-content {
+    padding: 20px 0 20px 28px;
     border-bottom: 1px solid var(--border);
   }
 
-  .map-divider { display: none; }
+  .tl-date { border-bottom: 1px solid var(--border); }
 
-  .map-header { margin-bottom: 14px; flex-shrink: 0; }
-  .map-num {
-    letter-spacing: .08em;
+  .kpi-ref {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--target);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  .tl-heading {
+    font-size: 15px;
+    font-weight: normal;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+
+  .tl-heading em {
+    font-style: normal;
+    color: var(--bozo);
+  }
+
+  .tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .task {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 13.5px;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+
+  .task-owner {
+    font-family: var(--mono);
     font-size: 9px;
-    letter-spacing: .12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--text-dimmer);
-    margin-bottom: 6px;
-  }
-  .map-title {
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--text);
-    margin-bottom: 6px;
-  }
-  .map-desc {
-    font-size: 12px;
-    color: var(--text-dim);
-    line-height: 1.65;
-    max-width: 560px;
+    padding: 2px 7px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 2px;
   }
 
-  /* MAP CANVAS */
+  .owner-n { background: var(--tag-bg); color: var(--ink2); }
+  .owner-m { background: var(--ink); color: #fff; }
+  .owner-both { background: var(--bozo); color: #fff; }
+
+  /* MAPS SECTION */
+  .maps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .map-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+  }
+
+  .map-card-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 4px;
+  }
+
+  .map-card-axes {
+    font-size: 13px;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+
   .map-canvas {
     position: relative;
     width: 100%;
-    flex: 1;
-    min-height: 0;
-    border: 1px solid var(--border);
-    background: var(--bg2);
-  }
-  .map-canvas::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
+    aspect-ratio: 1 / 0.9;
+    border: 0.5px solid var(--border);
+    background: var(--bg);
+    border-radius: 2px;
+    margin-bottom: 12px;
   }
 
-  .ax-h {
+  .axis-h {
     position: absolute;
-    left: 6%; right: 6%; top: 50%;
-    height: 1px;
-    background: var(--border-mid);
+    left: 8%; right: 8%;
+    top: 50%;
+    height: 0.5px;
+    background: var(--border);
   }
-  .ax-v {
+
+  .axis-v {
     position: absolute;
-    top: 6%; bottom: 6%; left: 50%;
-    width: 1px;
-    background: var(--border-mid);
+    top: 8%; bottom: 8%;
+    left: 50%;
+    width: 0.5px;
+    background: var(--border);
   }
+
   .ax-label {
     position: absolute;
-    letter-spacing: .08em;
-    font-size: 8.5px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--text-dimmer);
-    white-space: nowrap;
-  }
-  .ax-left  { left: 2%; top: 50%; transform: translateY(-50%); }
-  .ax-right { right: 2%; top: 50%; transform: translateY(-50%); text-align: right; }
-  .ax-top   { top: 1.5%; left: 50%; transform: translateX(-50%); }
-  .ax-bottom{ bottom: 1.5%; left: 50%; transform: translateX(-50%); }
-
-  /* BRAND POINTS */
-  .pt {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
-    z-index: 10;
-  }
-  .pt .dot {
-    border-radius: 50%;
-    width: 8px; height: 8px;
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    transition: transform .15s ease, opacity .15s ease;
-  }
-  .pt:hover .dot { transform: translate(-50%, -50%) scale(1.6); }
-  .pt .lbl {
-    position: absolute;
+    font-family: var(--mono);
     font-size: 9px;
-    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink3);
+  }
+
+  .ax-l { left: 2%; top: 50%; transform: translateY(-50%); }
+  .ax-r { right: 2%; top: 50%; transform: translateY(-50%); text-align: right; }
+  .ax-t { top: 2%; left: 50%; transform: translateX(-50%); }
+  .ax-b { bottom: 2%; left: 50%; transform: translateX(-50%); }
+
+  .dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: default;
+  }
+
+  .dot-now {
+    background: var(--now);
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--now);
+  }
+
+  .dot-target {
+    background: var(--target);
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--target);
+  }
+
+  .dot-arrow {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .dot-label {
+    position: absolute;
+    font-family: var(--mono);
+    font-size: 8.5px;
+    letter-spacing: 0.04em;
+    color: var(--ink2);
     white-space: nowrap;
-    line-height: 1.2;
-    pointer-events: none;
-    transition: opacity .15s;
+    transform: translate(-50%, 8px);
   }
 
-  .pt-bozo .dot { width: 12px; height: 12px; background: var(--bozo); box-shadow: 0 0 8px rgba(184,58,30,.25); }
-  .pt-bozo .lbl { color: var(--bozo); font-weight: 500; font-size: 10px; }
-  .pt-a .dot { background: var(--blue); opacity: .8; }
-  .pt-a .lbl { color: var(--blue); opacity: .85; }
-  .pt-b .dot { background: var(--green); opacity: .8; }
-  .pt-b .lbl { color: var(--green); opacity: .85; }
-  .pt-c .dot { background: var(--amber); opacity: .8; }
-  .pt-c .lbl { color: var(--amber); opacity: .85; }
-  .pt-d .dot { background: var(--gray); opacity: .7; }
-  .pt-d .lbl { color: var(--gray); opacity: .8; }
-  .pt-r .dot { background: transparent; border: 1.5px dashed var(--gray); opacity: .6; }
-  .pt-r .lbl { color: var(--gray); opacity: .65; font-style: italic; }
+  .map-legend {
+    display: flex;
+    gap: 16px;
+  }
 
-  /* TOOLTIP */
-  .tooltip {
-    position: fixed;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity .12s ease;
-    max-width: 260px;
-  }
-  .tooltip.visible { opacity: 1; }
-  .tooltip-inner {
-    background: #f0e9dc;
-    border: 1px solid var(--border-mid);
-    padding: 12px 14px;
-  }
-  .tt-name {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 4px;
+  .legend-item {
     display: flex;
     align-items: center;
-    gap: 8px;
-  }
-  .tt-cat {
-    letter-spacing: .08em;
-    font-size: 8px;
-    letter-spacing: .08em;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    padding: 2px 6px;
-    border-radius: 2px;
+    color: var(--ink3);
   }
-  .tt-desc {
-    font-size: 11px;
-    color: var(--text-dim);
-    line-height: 1.6;
-    margin-bottom: 6px;
+
+  .legend-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
   }
-  .tt-why {
-    font-size: 10.5px;
-    color: var(--text-dimmer);
-    line-height: 1.55;
-    border-top: 1px solid var(--border);
-    padding-top: 7px;
+
+  .map-note {
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: var(--ink2);
     font-style: italic;
+    line-height: 1.5;
   }
 
-  .cat-bozo { background: var(--bozo-dim); color: var(--bozo); }
-  .cat-a { background: rgba(91,143,212,.12); color: var(--blue); }
-  .cat-b { background: rgba(74,158,122,.12); color: var(--green); }
-  .cat-c { background: rgba(192,136,48,.12); color: var(--amber); }
-  .cat-d { background: rgba(106,104,96,.12); color: var(--gray); }
-  .cat-r { background: rgba(106,104,96,.08); color: var(--gray); }
-
-  /* DIVIDER between maps */
-  .map-divider {
-    height: 1px;
-    background: var(--border);
-    margin: 60px 0 0;
+  /* TAGS SECTION */
+  .tags-intro {
+    max-width: 600px;
+    font-size: 14px;
+    color: var(--ink2);
+    line-height: 1.7;
+    margin-bottom: 32px;
   }
 
-  /* NOTES PANEL — sticky full height */
-  .notes-col {
-    display: flex;
-    flex-direction: column;
-    position: sticky;
-    top: 0;
-    height: 100%;
+  .tags-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .tag-card {
+    border: 1px solid var(--border);
+    border-radius: 3px;
     overflow: hidden;
   }
-  .notes-header {
-    padding: 20px 20px 14px;
-    border-bottom: 1px solid var(--border);
+
+  .tag-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: var(--tag-bg);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
+    justify-content: center;
+    border-bottom: 1px solid var(--border);
   }
-  .notes-title {
-    letter-spacing: .08em;
-    font-size: 9px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--text-dimmer);
-  }
-  .notes-clear {
-    font-size: 10px;
-    color: var(--text-dimmer);
-    background: none;
-    border: none;
-    cursor: pointer;
-    
-    padding: 2px 6px;
-    border-radius: 2px;
-    transition: color .15s;
-  }
-  .notes-clear:hover { color: var(--text); }
 
-  .notes-area {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    padding: 16px 20px;
+  .tag-img-placeholder {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    text-align: center;
+    padding: 20px;
+  }
+
+  .tag-info {
+    padding: 12px 14px;
+  }
+
+  .tag-name {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .tag-desc {
+    font-size: 12px;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+
+  .tag-direction {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 24px 28px;
+    margin-top: 8px;
+  }
+
+  .tag-direction-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 14px;
+  }
+
+  .direction-points {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-  }
-  .notes-prompt {
-    font-size: 11.5px;
-    color: var(--text-dimmer);
-    line-height: 1.65;
-    font-style: italic;
+    gap: 10px;
   }
 
-  .note-entry {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    padding: 9px 10px;
-    position: relative;
-    flex-shrink: 0;
-  }
-  .note-meta {
-    letter-spacing: .08em;
-    font-size: 8.5px;
-    color: var(--text-dimmer);
-    margin-bottom: 5px;
-    letter-spacing: .04em;
+  .direction-point {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .note-delete {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--text-dimmer);
-    font-size: 11px;
-    padding: 0;
-    line-height: 1;
-    transition: color .15s;
-  }
-  .note-delete:hover { color: var(--bozo); }
-  .note-text {
-    font-size: 12px;
-    color: var(--text);
-    line-height: 1.65;
-    white-space: pre-wrap;
-    word-break: break-word;
+    gap: 14px;
+    font-size: 13.5px;
+    color: var(--ink2);
+    line-height: 1.5;
   }
 
-  .note-input-wrap {
-    border-top: 1px solid var(--border);
-    padding: 14px 20px 16px;
+  .direction-point::before {
+    content: '—';
+    color: var(--ink3);
     flex-shrink: 0;
+    font-family: var(--mono);
   }
-  .note-input {
-    width: 100%;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    color: var(--text);
-    
-    font-size: 12px;
-    font-weight: 300;
-    line-height: 1.6;
-    resize: vertical;
-    min-height: 80px;
-    padding: 10px 12px;
-    outline: none;
-    transition: border-color .15s;
-  }
-  .note-input::placeholder { color: var(--text-dimmer); }
-  .note-input:focus { border-color: var(--border-mid); }
-  .note-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 8px;
-    gap: 8px;
-    align-items: center;
-  }
-  .note-hint {
-    font-size: 10px;
-    color: var(--text-dimmer);
-    flex: 1;
-  }
-  .btn-add {
-    background: none;
-    border: 1px solid var(--border-mid);
-    color: var(--text);
-    
-    font-size: 11px;
-    font-weight: 400;
-    padding: 6px 14px;
-    cursor: pointer;
-    letter-spacing: .04em;
-    transition: border-color .15s, color .15s;
-  }
-  .btn-add:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* POSITIONING SUMMARY */
-  .context-box {
-    padding: 40px 40px 60px;
-    border-top: 1px solid var(--border);
+  /* LABEL TIMELINE */
+  .label-timeline {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 24px 28px;
+    margin-top: 32px;
   }
-  .ctx-heading {
+
+  .label-timeline-title {
+    font-family: var(--mono);
     font-size: 10px;
-    letter-spacing: .12em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--text-dimmer);
-    margin-bottom: 28px;
-  }
-  .ctx-items {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 36px;
-  }
-  .ctx-item {}
-  .ctx-label {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 10px;
-  }
-  .ctx-text {
-    font-size: 12.5px;
-    color: var(--text-dim);
-    line-height: 1.75;
+    color: var(--ink3);
+    margin-bottom: 20px;
   }
 
-  @media (max-width: 900px) {
-    .main { grid-template-columns: 1fr; height: auto; }
-    .maps-col { height: 100vh; }
-    .notes-col { position: static; height: auto; border-top: 1px solid var(--border); }
-    header { flex-direction: column; gap: 6px; }
-    .intro { padding: 24px 20px; }
-    .legend-bar { padding: 14px 20px; }
-    .context-box { padding: 32px 20px 48px; }
-    .ctx-items { grid-template-columns: 1fr 1fr; gap: 24px; }
-    .map-section { padding: 24px 20px 16px; }
+  .label-steps {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    position: relative;
+  }
+
+  .label-step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    padding: 0 8px;
+  }
+
+  .label-step::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    right: -50%;
+    height: 1px;
+    background: var(--border);
+    z-index: 0;
+  }
+
+  .label-step:last-child::before { display: none; }
+
+  .step-dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    margin: 0 auto 8px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-dot.urgent { border-color: var(--bozo); background: var(--bozo); }
+  .step-dot.done { border-color: var(--target); background: var(--target); }
+
+  .step-date {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    color: var(--ink3);
+    margin-bottom: 4px;
+  }
+
+  .step-label {
+    font-size: 12px;
+    color: var(--ink2);
+    line-height: 1.4;
+  }
+
+  /* ARROW SVG */
+  .arrow-svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 800px) {
+    header { padding: 20px; }
+    nav { padding: 0 20px; }
+    .section { padding: 24px 20px; }
+    .maps-grid { grid-template-columns: 1fr; }
+    .tags-grid { grid-template-columns: 1fr 1fr; }
+    .label-steps { flex-direction: column; gap: 16px; }
+    .label-step::before { display: none; }
   }
 </style>
 </head>
@@ -486,554 +570,438 @@
 
 <header>
   <div class="header-left">
-    <span class="brand-name">Bozo</span>
-    <span class="doc-title">Brand Positioning — Landscape Maps</span>
+    <h1>BOZO Paris — Working Reference</h1>
+    <span class="header-meta">Antra × Noam Elfassi &nbsp;·&nbsp; SS27</span>
   </div>
-  <span class="header-meta">Prepared by Antra合同会社 · April 2026</span>
 </header>
 
-<div class="intro">
-  <h1>Where does Bozo sit in this landscape — and where could it go?</h1>
-  <p>Four maps across different axes: heritage depth, maker proximity, cultural specificity, and craft visibility. Each brand is placed based on research. Bozo is marked in red. Hover any point to read the rationale. Use the notes panel to capture observations during the review.</p>
-</div>
+<nav>
+  <div class="tab active" onclick="showTab('plan')">Plan</div>
+</nav>
 
-<div class="legend-bar">
-  <span class="legend-label">Key</span>
-  <div class="leg-items">
-    <div class="leg-item"><div class="leg-dot" style="background:var(--bozo)"></div>Bozo</div>
-    <div class="leg-item"><div class="leg-dot" style="background:var(--blue);opacity:.8"></div>Material / craft anchor</div>
-    <div class="leg-item"><div class="leg-dot" style="background:var(--green);opacity:.8"></div>Heritage-led</div>
-    <div class="leg-item"><div class="leg-dot" style="background:var(--amber);opacity:.8"></div>Concept-led</div>
-    <div class="leg-item"><div class="leg-dot" style="background:var(--gray);opacity:.7"></div>Reference brand</div>
-    <div class="leg-item"><div class="leg-dot" style="background:transparent;border:1.5px dashed var(--gray);"></div>Reference point (store / collector)</div>
-  </div>
-</div>
+<!-- ═══════════════════════════════ PLAN ═══════════════════════════════ -->
+<div class="section active" id="plan">
+  <div class="section-title">60-Day Plan — Now → Paris (June 23) &nbsp;·&nbsp; Weekly breakdown</div>
 
-<div class="main">
-  <div class="maps-col" id="maps-col"></div>
+  <div class="timeline">
 
-  <div class="notes-col">
-    <div class="notes-header">
-      <span class="notes-title">Session Notes</span>
-      <button class="notes-clear" onclick="clearNotes()">Clear all</button>
-    </div>
-    <div class="notes-area" id="notes-area">
-      <p class="notes-prompt">Use this space to capture observations, tensions, or decisions that come up during the review.</p>
-    </div>
-    <div class="note-input-wrap">
-      <textarea class="note-input" id="note-input" placeholder="Add a note…"></textarea>
-      <div class="note-actions">
-        <span class="note-hint">⌘↵ to add</span>
-        <button class="btn-add" onclick="addNote()">Add note</button>
+    <!-- WEEK 1 (PAST) -->
+    <div class="tl-block">
+      <div class="tl-date">Wk 1<br>Apr 28–May 2</div>
+      <div class="tl-content">
+        <div class="tl-heading">Kickoff — <em>completed</em></div>
+        <div class="kpi-ref">✓ First review call · Positioning maps walked through · Workflow planned</div>
+        <div class="tasks">
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            SS27 first sample review — walked through available shapes, what's confirmed, what's still moving
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Aligned on brand positioning maps — current vs. aspirational across four axes, general direction
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Established ideal working rhythm and communication cadence — how we move forward over next 8 weeks
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Discussed tagging and SKU thinking — established the logic we'll build on
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- WEEK 2 (NOW) -->
+    <div class="tl-block urgent">
+      <div class="tl-date">Wk 2<br>May 5–9</div>
+      <div class="tl-content">
+        <div class="tl-heading">Assets + wholesale structure — <em>this week</em></div>
+        <div class="kpi-ref">→ KPIs: Brand positioning document begun · Wholesale system drafted · Target retailer list initiated</div>
+        <div class="tasks">
+          <div class="task">
+            <span class="task-owner owner-n">Noam</span>
+            Send any further archive material from the Fez studio — photographs, garments, hardware references, anything not yet shared
+          </div>
+          <div class="task">
+            <span class="task-owner owner-n">Noam</span>
+            Send raw costing data: production costs, material costs, current pricing thinking
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Build costing document together — Max helps structure wholesale pricing, margins, MOQs, payment terms from Noam's data
+          </div>
+          <div class="task">
+            <span class="task-owner owner-m">Max</span>
+            Define target retailer list by EOW — store-by-store, segmented by market, with profile and outreach rationale per account
+          </div>
+          <div class="task">
+            <span class="task-owner owner-m">Max</span>
+            Brand language document draft: how BOZO describes itself — condensed, precise, speakable in an appointment
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Wholesale assets audit: line sheet structure, terms sheet, order form — what exists, what needs building or rebuilding
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Work on base labels for garments — explore direction, typographic approach, execution method. Archive references as starting point.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 3 -->
+    <div class="tl-block">
+      <div class="tl-date">Wk 3<br>May 12–16</div>
+      <div class="tl-content">
+        <div class="tl-heading">Retailer list finalised + content strategy</div>
+        <div class="kpi-ref">→ KPIs: Buyer outreach initiated with right retailers · Japanese landscape mapped · Content narrative begun</div>
+        <div class="tasks">
+          <div class="task">
+            <span class="task-owner owner-m">Max</span>
+            Finalise retailer list with outreach rationale — comment on strategy per store, confirm tier 1 targets, align with Noam
+          </div>
+          <div class="task">
+            <span class="task-owner owner-m">Max</span>
+            Align with Kosuke (Le Loup) on Japanese retailer landscape — what's available given his SS27 exclusivity, who to approach for future
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Consider adjacent content strategy for FW26 — how to softly promote, tease what's coming, align imagery and narrative for the upcoming season without announcement
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            SS27 teaser approach — what's available now, how to introduce it, positioning relative to FW26 just ending
+          </div>
+          <div class="task">
+            <span class="task-owner owner-m">Max</span>
+            Begin buyer outreach — personalised per account, early conversations. Not appointment requests yet, relationship first.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 4 -->
+    <div class="tl-block">
+      <div class="tl-date">Wk 4<br>May 19–23</div>
+      <div class="tl-content">
+        <div class="tl-heading">Line sheet + soft seeding</div>
+        <div class="kpi-ref">→ KPIs: Wholesale pricing and terms confirmed · Soft seeding with priority retailers · Brand positioning locked</div>
+        <div class="tasks">
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Line sheet first draft — categories clean, hero pieces identified, pricing confirmed, order of presentation agreed
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Soft seeding with priority retailers and aligned PR where relevant — not a press release, targeted conversations
+          </div>
+          <div class="task">
+            <span class="task-owner owner-n">Noam</span>
+            Confirm SS27 collection is locked — no further additions. What's in is in.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 5 -->
+    <div class="tl-block">
+      <div class="tl-date">Wk 5<br>May 26–30</div>
+      <div class="tl-content">
+        <div class="tl-heading">Showroom concept + pipeline building</div>
+        <div class="kpi-ref">→ KPIs: Showroom presence reads as considered brand experience · Appointment pipeline forming · Buyer communication tone established</div>
+        <div class="tasks">
+          <div class="task">
+            <span class="task-owner owner-m">Max</span>
+            Showroom concept document — garment selection logic, appointment flow, how the space reads on arrival
+          </div>
+          <div class="task">
+            <span class="task-owner owner-m">Max</span>
+            Follow up all outreach — qualify interest, move toward appointment conversations
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Merchandising review: key looks defined, how the collection is sequenced on the rail and spoken about
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 6 -->
+    <div class="tl-block">
+      <div class="tl-date">Wk 6<br>June 2–6</div>
+      <div class="tl-content">
+        <div class="tl-heading">Appointments confirmed + prep deepens</div>
+        <div class="kpi-ref">→ KPIs: Right retailers approached with the right message · Appointment calendar taking shape · Pre-appointment system in place</div>
+        <div class="tasks">
+          <div class="task">
+            <span class="task-owner owner-m">Max</span>
+            Convert pipeline to confirmed appointments — build June 23–28 calendar, plug gaps
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Pre-appointment accommodation system: briefing template, timing, responsibility — what gets sent to each buyer before they arrive
+          </div>
+          <div class="task">
+            <span class="task-owner owner-n">Noam</span>
+            All garments confirmed for Paris — production, packaging, shipping window locked
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Shortlist potential FW27 agents — identify who to build toward during showroom week
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 7 -->
+    <div class="tl-block">
+      <div class="tl-date">Wk 7<br>June 9–13</div>
+      <div class="tl-content">
+        <div class="tl-heading">Final assets + rehearsal</div>
+        <div class="kpi-ref">→ KPIs: Buyer communications finalised · Collection story speakable and consistent · All assets print-ready</div>
+        <div class="tasks">
+          <div class="task">
+            <span class="task-owner owner-m">Max</span>
+            Briefing documents finalised and sent to confirmed buyers ahead of appointments
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Full run-through of buyer appointment: what's said, what's shown, how price is introduced, how questions are handled
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Line sheet, terms, order form — final versions, print-ready and digital
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 8 -->
+    <div class="tl-block">
+      <div class="tl-date">Wk 8<br>June 16–20</div>
+      <div class="tl-content">
+        <div class="tl-heading">Paris ready</div>
+        <div class="kpi-ref">→ KPIs: Showroom experience finalised · Garments in Paris · Max on the ground</div>
+        <div class="tasks">
+          <div class="task">
+            <span class="task-owner owner-n">Noam</span>
+            All garments in Paris — steamed, organised, sequenced. Packaging and presentation confirmed.
+          </div>
+          <div class="task">
+            <span class="task-owner owner-m">Max</span>
+            Arrive Paris — setup, final walkthrough of appointment flow with Noam
+          </div>
+          <div class="task">
+            <span class="task-owner owner-m">Max</span>
+            Last-minute appointment follow-ups — confirm all times, send reminders
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARIS -->
+    <div class="tl-block key">
+      <div class="tl-date">June 23<br>— 28</div>
+      <div class="tl-content">
+        <div class="tl-heading">Paris Men's Fashion Week — <em>showroom open</em></div>
+        <div class="kpi-ref">→ KPIs: Impressions made to right retailers · Agent relationships built · Debrief structure in place for FW27</div>
+        <div class="tasks">
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Buyer appointments — Max co-presenting throughout, not shadowing
+          </div>
+          <div class="task">
+            <span class="task-owner owner-m">Max</span>
+            Log feedback in real time: what buyers respond to, where hesitation sits, what questions recur
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            Build agent relationships during the week — conversations in appointment format where possible
+          </div>
+          <div class="task">
+            <span class="task-owner owner-both">Both</span>
+            End-of-week debrief: what landed, what didn't, what changes for FW27
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelector(`[onclick="showTab('${id}')"]`).classList.add('active');
+    document.getElementById(id).classList.add('active');
+  }
+</script>
+</body>
+</html>
+  <div class="section-title">Brand Position — Now vs. Where We're Going</div>
+
+  <div class="maps-grid">
+
+    <!-- MAP 1: Heritage vs Legibility -->
+    <div class="map-card">
+      <div class="map-card-title">Map 01</div>
+      <div class="map-card-axes">Heritage depth → Brand legibility</div>
+      <div class="map-canvas" id="mc1">
+        <div class="axis-h"></div>
+        <div class="axis-v"></div>
+        <div class="ax-label ax-l">Opaque</div>
+        <div class="ax-label ax-r">Legible</div>
+        <div class="ax-label ax-t">Deep Heritage</div>
+        <div class="ax-label ax-b">No Heritage</div>
+        <svg class="arrow-svg"><defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2b5c3a"/></marker></defs>
+          <line x1="38%" y1="34%" x2="48%" y2="28%" stroke="#2b5c3a" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+        </svg>
+        <div class="dot dot-now" style="left:38%;top:34%;" title="Now"></div>
+        <div class="dot dot-target" style="left:50%;top:27%;" title="Target"></div>
+      </div>
+      <div class="map-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--now)"></div> Now</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--target)"></div> Target</div>
+      </div>
+      <div class="map-note">Heritage is there. The gap is legibility — how the story gets told, not the story itself. Small movement, high impact.</div>
+    </div>
+
+    <!-- MAP 2: Maker vs Scale -->
+    <div class="map-card">
+      <div class="map-card-title">Map 02</div>
+      <div class="map-card-axes">Maker proximity → Commercial ambition</div>
+      <div class="map-canvas" id="mc2">
+        <div class="axis-h"></div>
+        <div class="axis-v"></div>
+        <div class="ax-label ax-l">Singular maker</div>
+        <div class="ax-label ax-r">Industrial</div>
+        <div class="ax-label ax-t">Ambitious scale</div>
+        <div class="ax-label ax-b">Intentionally small</div>
+        <svg class="arrow-svg"><defs><marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2b5c3a"/></marker></defs>
+          <line x1="38%" y1="52%" x2="35%" y2="38%" stroke="#2b5c3a" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr2)"/>
+        </svg>
+        <div class="dot dot-now" style="left:38%;top:52%;"></div>
+        <div class="dot dot-target" style="left:35%;top:37%;"></div>
+      </div>
+      <div class="map-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--now)"></div> Now</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--target)"></div> Target</div>
+      </div>
+      <div class="map-note">Closer to Gabriela Coll i Garriga than to a factory brand. The artisanal process is real — it needs to be shown, not assumed.</div>
+    </div>
+
+    <!-- MAP 3: Cultural vs Geographic -->
+    <div class="map-card">
+      <div class="map-card-title">Map 03</div>
+      <div class="map-card-axes">Cultural specificity → Geographic reach</div>
+      <div class="map-canvas" id="mc3">
+        <div class="axis-h"></div>
+        <div class="axis-v"></div>
+        <div class="ax-label ax-l">Culturally specific</div>
+        <div class="ax-label ax-r">Universal</div>
+        <div class="ax-label ax-t">Global reach</div>
+        <div class="ax-label ax-b">Intentionally local</div>
+        <svg class="arrow-svg"><defs><marker id="arr3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2b5c3a"/></marker></defs>
+          <line x1="52%" y1="50%" x2="44%" y2="40%" stroke="#2b5c3a" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+        </svg>
+        <div class="dot dot-now" style="left:52%;top:50%;"></div>
+        <div class="dot dot-target" style="left:44%;top:39%;"></div>
+      </div>
+      <div class="map-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--now)"></div> Now</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--target)"></div> Target</div>
+      </div>
+      <div class="map-note">Morocco, Japan, France — the geography is already there. Making it legible without making it the whole story. Named but not branded.</div>
+    </div>
+
+    <!-- MAP 4: Craft vs Price -->
+    <div class="map-card">
+      <div class="map-card-title">Map 04</div>
+      <div class="map-card-axes">Craft visibility → Price point</div>
+      <div class="map-canvas" id="mc4">
+        <div class="axis-h"></div>
+        <div class="axis-v"></div>
+        <div class="ax-label ax-l">Invisible craft</div>
+        <div class="ax-label ax-r">Visible craft</div>
+        <div class="ax-label ax-t">High price</div>
+        <div class="ax-label ax-b">Accessible</div>
+        <svg class="arrow-svg"><defs><marker id="arr4" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2b5c3a"/></marker></defs>
+          <line x1="34%" y1="36%" x2="55%" y2="36%" stroke="#2b5c3a" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr4)"/>
+        </svg>
+        <div class="dot dot-now" style="left:34%;top:36%;"></div>
+        <div class="dot dot-target" style="left:57%;top:36%;"></div>
+      </div>
+      <div class="map-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--now)"></div> Now</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--target)"></div> Target</div>
+      </div>
+      <div class="map-note">Price point is justified by the material — the craft just isn't yet visible enough to make it feel inevitable. Tags, labels, presentation all close this gap.</div>
+    </div>
+
   </div>
 </div>
 
-<div class="context-box">
-  <div class="ctx-heading">Positioning summary</div>
-  <div class="ctx-items">
-    <div class="ctx-item">
-      <div class="ctx-label">Heritage &amp; legibility</div>
-      <div class="ctx-text"> A generational story that begins with Armand in Paris, rooted in Fez, and continues through Noam's relaunch. The work here is translation: making what already exists readable on first contact, so buyers can hold the story, not just touch the leather.</div>
+<!-- ═══════════════════════════════ TAGS ═══════════════════════════════ -->
+<div class="section" id="tags">
+  <div class="section-title">Tagging + SKU Reference</div>
+
+  <p class="tags-intro">To work through together — not a blocker, not a main event. The tagging system and SKU logic need to be simple and scalable from day one. Archive references below as working material. Labels are handled separately by Noam; what's here is directional context.</p>
+
+  <div class="tags-grid">
+
+    <div class="tag-card">
+      <div class="tag-img">
+        <div class="tag-img-placeholder">Archive Ref 01<br>— add image —</div>
+      </div>
+      <div class="tag-info">
+        <div class="tag-name">Armand Elfassi Archive</div>
+        <div class="tag-desc">Original Bozo label — woven, serif typeface, Made in France. Register and texture worth studying as reference for tone, not reproduction.</div>
+      </div>
     </div>
-    <div class="ctx-item">
-      <div class="ctx-label">Production &amp; proximity</div>
-      <div class="ctx-text">Working in Fez is a return to origin, a personal connection to place and leather tradition, not a manufacturing convenience. That distinction matters. The closeness to the material is earned, which gives it a different weight than brands that simply choose an artisanal production region for positioning purposes.</div>
+
+    <div class="tag-card">
+      <div class="tag-img">
+        <div class="tag-img-placeholder">Archive Ref 02<br>— add image —</div>
+      </div>
+      <div class="tag-info">
+        <div class="tag-name">Archive Jacket Tag</div>
+        <div class="tag-desc">Found on the German eBay archive piece. Stitching method and restrained logo placement are the relevant notes.</div>
+      </div>
     </div>
-    <div class="ctx-item">
-      <div class="ctx-label">The generational arc</div>
-      <div class="ctx-text">Armand looked to the US the way his generation of makers did, as a source of a certain freedom in form. Noam looks to Japan with the same eyes: different era, different reference, same disposition. That parallel; father and son, each drawn to an outside influence - is the thread that connects the original Bozo to its relaunch. It's a brand built on admiration as method.</div>
+
+    <div class="tag-card">
+      <div class="tag-img">
+        <div class="tag-img-placeholder">Reference 03<br>— add image —</div>
+      </div>
+      <div class="tag-info">
+        <div class="tag-name">Comp References</div>
+        <div class="tag-desc">A-PRESSE, The Row, Hugan — labels that make a garment feel finished on contact. Quiet, confident, not decorative.</div>
+      </div>
     </div>
-    <div class="ctx-item">
-      <div class="ctx-label">Craft &amp; price</div>
-      <div class="ctx-text">Material quality is confirmed at the point of touch. At designer price, that quality needs a frame — a reason the number feels inevitable rather than asserted. Visvim, Taiga Takahashi, Gajiroc: all occupy the same quadrant. All lead with story before garment. The quality is present. The narrative frame is the remaining work.</div>
+
+  </div>
+
+  <div class="tag-direction">
+    <div class="tag-direction-title">SKU System — working principles</div>
+    <div class="direction-points">
+      <div class="direction-point">Keep it readable by category: leather / denim / jersey / outerwear as the primary tier, season and number as secondary. e.g. BZ-LJ-SS27-001.</div>
+      <div class="direction-point">Origin should be encoded or at least traceable — Japan vs. Morocco vs. France production matters for pricing, terms, and storytelling.</div>
+      <div class="direction-point">Consider a numbered edition flag for one-off leather pieces where the material won't repeat. Adds scarcity without claiming it explicitly.</div>
+      <div class="direction-point">The system should sit comfortably on a line sheet from day one — categories clean, no ambiguity for buyers.</div>
     </div>
   </div>
-</div>
 
-<div id="tooltip" class="tooltip"><div class="tooltip-inner"><div class="tt-name" id="tt-name"></div><div class="tt-desc" id="tt-desc"></div><div class="tt-why" id="tt-why"></div></div></div>
+</div>
 
 <script>
-// ─── DATA ─────────────────────────────────────────────────────────────────────
-
-const BOZO_MAP_DESC = {
-  '01': {
-    desc: 'A generational story reaching back to Armand\'s original Paris brand — rooted in Fez, where the leather and the lineage both originate. Noam\'s relaunch carries that inheritance forward. Most brands in this landscape invented their heritage. Bozo was born into it.',
-    why: 'The depth is real, not constructed. The work is making it readable on first contact.',
-  },
-  '02': {
-    desc: 'Production in Fez is the result of a personal connection to place and material tradition, a genuine return to origin. That distinction matters: the closeness is earned, not assumed. It gives the brand access to leather craft that most designer labels can only point at from a distance.',
-    why: 'Maker-proximity rooted in cultural connection rather than family ownership is, if anything, a richer story — it\'s chosen, not inherited.',
-  },
-  '03': {
-    desc: 'Moroccan origin, Paris address, Japan as a horizon — not a market strategy but a sensibility. Armand looked to the US the way his generation of makers did: as a source of a certain freedom in form. Noam looks to Japan with the same eyes — different era, different influence, same disposition. That parallel is the thread.',
-    why: 'The triangle isn\'t a complication — it\'s the proposition. Few brands can claim a cultural arc that is both deeply specific and genuinely continuous across generations.',
-  },
-  '04': {
-    desc: 'Leather and denim at designer price, with material quality that makes itself felt immediately. The craft lives in the material — in weight, handfeel, construction — not in decoration. At this price, that quality needs a frame: a reason the number feels inevitable rather than argued for.',
-    why: 'The quality is acknowledged. The narrative frame is the remaining work.',
-  },
-};
-
-const BRANDS = {
-  'Bozo': {
-    cls: 'pt-bozo', cat: 'bozo', catLabel: 'Bozo',
-  },
-  'The Row': {
-    cls: 'pt-d', cat: 'd', catLabel: 'Reference brand',
-    desc: 'Mary-Kate and Ashley Olsen, 2006. The commercial standard-bearer for quiet luxury. No logo, extreme fabric obsession, Italian and French production.',
-    why: 'Benchmarks what "quality without explanation" looks like at full commercial scale — and how long it took to get there.',
-  },
-  'Visvim': {
-    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
-    desc: 'Tokyo, 2000. Hiroki Nakamura. Japanese craft meets global material archaeology — American workwear, Native American traditions, Andean textiles, Japanese dyeing. Very high price point.',
-    why: 'The template for how cultural specificity + global reach can coexist. The brand Bozo is most structurally similar to — but Visvim has 25 years of story behind it.',
-  },
-  'Auralee': {
-    cls: 'pt-a', cat: 'a', catLabel: 'Material / craft anchor',
-    desc: 'Tokyo, 2015. Ryota Iwai. Every collection starts with bespoke fabric development. Described as what\'s replaced The Row for cognoscenti. Recently showed at Paris MFW.',
-    why: 'Shows that fabric-first with no heritage story can reach major commercial scale — if the material language is extraordinary and consistent.',
-  },
-  'A.Presse': {
-    cls: 'pt-a', cat: 'a', catLabel: 'Material / craft anchor',
-    desc: 'Tokyo, 2021. Kazuma Shigematsu calls himself an "editor," not a designer. Vintage Americana/French/Japanese sources. Sells out day-of. Hypebeast Best New Brand 2025. No online shop.',
-    why: 'Proof that a brand with no distinctive identity — deliberately "no worldview" — can become fashion\'s most talked-about label purely through material and fit precision.',
-  },
-  'Taiga Takahashi': {
-    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
-    desc: 'NY/Kyoto, 2017. Founder died at 27 in 2022; brand continues. Archaeological approach to pre-mass-production American vintage, reinterpreted through Japanese craft — natural dyes, antique looms.',
-    why: 'The closest structural analogue to Bozo\'s position. Genuine material depth + cultural specificity + a legible founding story. The gap is that T.T\'s concept was fully articulated from day one.',
-  },
-  'Niceness': {
-    cls: 'pt-a', cat: 'a', catLabel: 'Material / craft anchor',
-    desc: 'Tokyo, 2017. Yuichi Goh. Principle: "just good is good." Wildly eclectic range held together by material obsession. ~80 stockists. 10-person team operating with the output of a fashion house.',
-    why: 'Shows that eclecticism works when the underlying commitment is unambiguous. Bozo\'s black leather focus is more singular — which is an asset, not a limitation.',
-  },
-  'Heugn': {
-    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
-    desc: 'Tokyo, 2019. Named from yūgen (幽玄) — profound and mysterious beauty. Pursues the gap between tradition and the present through simple, high-quality tailoring designed to be passed between generations.',
-    why: 'A quiet Japanese brand that has built genuine aesthetic integrity through consistent philosophy. Demonstrates that the "heirloom garment" narrative can sustain a brand.',
-  },
-  'Conkers': {
-    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
-    desc: 'London, 2021. Oliver Warner (ex-Studio Nicholson, Our Legacy). British countryside heritage — farmer shirts, waxed outerwear — from UK mills. Each piece hand-stamped with production number.',
-    why: 'A useful parallel: cultural specificity (rural Britain) made legible through story, material sourcing transparency, and community language. Buyers understand immediately what they\'re buying into.',
-  },
-  'Oliver Church': {
-    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
-    desc: 'Paris, 2020. New Zealander Oliver Church. Every garment designed, cut, sewn, embroidered, naturally dyed by Church personally. Antique French deadstock, 50–150 years old. ~20 pieces/month.',
-    why: 'The extreme end of maker-proximity. What Bozo\'s Fez production story could approach in language, if not in method — the personal, traceable, singular garment.',
-  },
-  'Senui Shirt': {
-    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
-    desc: 'Tokyo (Setagaya), 2022. Hiroyuki Kato. One-person operation. Every shirt uses the senui (背縫い) back-seam technique from kimono construction. Cotton thread, vintage-spec machines, 22 stitches/30mm.',
-    why: 'Shows that a single technical gesture — one construction detail with a cultural name and meaning — can become an entire brand proposition.',
-  },
-  'Salon C. Lundman': {
-    cls: 'pt-a', cat: 'a', catLabel: 'Material / craft anchor',
-    desc: 'Stockholm, 2023. Christoffer Lundman (ex-Burberry, Acne, Tiger of Sweden). Precise tailoring with Scandinavian restraint and intellectual wit. Picked up DSM London, Biotop Tokyo in first Paris showing.',
-    why: 'Demonstrates that a new brand with strong conceptual clarity and craft — but no "heritage" per se — can land top-tier accounts in its first season. The lesson: legibility matters more than age.',
-  },
-  'Gabriela Coll': {
-    cls: 'pt-c', cat: 'c', catLabel: 'Concept-led',
-    desc: 'Barcelona. Fine arts background, Mediterranean roots. Releases in "Series" not seasons — now on Series 15. Seasonless; garments designed to accumulate into a biography over time.',
-    why: 'A model for how a brand can structure its output to communicate permanence. The "series" format and the "permanent wardrobe" language directly addresses the buyer question: why buy this?',
-  },
-  'Lea Boberg': {
-    cls: 'pt-c', cat: 'c', catLabel: 'Concept-led',
-    desc: 'London, 2020. Danish-born, RCA-trained, ex-Casely-Hayford. Oversized tailored suits, soft silhouettes, partly made-to-measure. Explicitly small — "collections only for people within my immediate circle."',
-    why: 'Shows that radical smallness can be a brand statement rather than a limitation. The anti-wholesale posture creates desire.',
-  },
-  'Nahyat': {
-    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
-    desc: 'Tokyo, 2017. Former Yohji Yamamoto knitwear director Masahiko Yoda. ~10 sweaters/year, made-to-order, one size. Orders taken once yearly at invitation-only events. No wholesale, no online store.',
-    why: 'The furthest possible reduction of commercial model — and it works precisely because the material obsession is so complete. An extreme that clarifies what "material-led" actually means.',
-  },
-  'Gajiroc': {
-    cls: 'pt-b', cat: 'b', catLabel: 'Heritage-led',
-    desc: 'Seoul, 2022. Gi Tae, trained under Evan Kinori. One-man operation. Cuts every pattern himself, sources in Japan and Italy, sells to one store per city regardless of demand. FW26: 30 pieces.',
-    why: 'Structurally very close to where Bozo currently sits — strong material conviction, small scale, Paris showroom, Japanese buyer targets. A mirror of the early-stage journey.',
-  },
-  'Bibliotherk': {
-    cls: 'pt-c', cat: 'c', catLabel: 'Concept-led',
-    desc: 'Japan. Ryunosuke Hata, born Buenos Aires, raised Shibuya and Amsterdam. Name merges Bibliothek (German: library) with his initial R. German workwear details, military references, "ennui human image."',
-    why: 'Demonstrates that a complex multicultural biography can become a brand language — but only when the cultural references are made specific and legible, not left abstract.',
-  },
-  'Vuja Dé': {
-    cls: 'pt-c', cat: 'c', catLabel: 'Concept-led',
-    desc: 'Tokyo, est. ~2018, now on 11th season. Founded by Ken Ijima. "Refined essentialism and utilitarian nuance." Workwear and military archetypes, merging local fabric traditions with artisanship.',
-    why: 'A quiet brand that has built consistent season-by-season identity without loud communication. Shows that restraint in brand language can accumulate into recognition.',
-  },
-  'Luke Derrick': {
-    cls: 'pt-a', cat: 'a', catLabel: 'Material / craft anchor',
-    desc: 'London. CSM BA + MA. Trained at Savile Row, Brioni, Alexander McQueen. Pragmatic tailoring — "getting away with it" dressing. Hainsworth cloth, Japanese nylon taffeta. On LFW schedule.',
-    why: 'Useful comparison for how tailoring heritage can be repositioned around wearability and modern life rather than formality. The "declassified" luxury approach.',
-  },
-  'De Dam Foundation': {
-    cls: 'pt-d', cat: 'd', catLabel: 'Reference brand',
-    desc: 'Amsterdam, 2022. Korean-born, Dutch-based designer John Ro. Dutch lifestyle as design philosophy — modular, genderless, foundational items. The dam as structural metaphor.',
-    why: 'An emerging brand at a similar stage to Bozo — building from a cultural origin story with modest commercial infrastructure. Useful for understanding where independent brands start.',
-  },
-  'Au Concours': {
-    cls: 'pt-d', cat: 'd', catLabel: 'Reference brand',
-    desc: 'London, 2023. Christopher Smith, New Zealand-born. "Born from the excessive." Motorsport and material as DNA — car culture channelled into leather and denim. Discord-built following, now heading to Paris MFW.',
-    why: 'Shares Bozo\'s leather/denim focus and pre-wholesale stage. Useful mirror for how a specific, unlikely cultural reference (motorsport) can become brand identity before scale.',
-  },
-  'Les Six': {
-    cls: 'pt-c', cat: 'c', catLabel: 'Concept-led',
-    desc: 'Tottori Prefecture, Japan. Ryohei Kawanishi (CSM/Parsons, ex-Landlord NY). Collective + concept store in twin Taisho-era warehouses. Mingei furniture, art library, open workshop. Rejects "lifestyle" — uses i-shoku-ju.',
-    why: 'The most extreme version of geographic specificity-as-brand-identity. A useful extreme to consider: what would it mean for Bozo to be this rooted in Fez specifically?',
-  },
-  'Final Layer Berlin': {
-    cls: 'pt-r', cat: 'r', catLabel: 'Reference point',
-    desc: 'Prenzlauer Allee, Berlin. Archive and designer vintage store. Featured in Ginza Magazine Tokyo. Running a YouTube show "@ the store." A taste-setting operation for how archival appreciation is aestheticised.',
-    why: 'A reference for the cultural moment: the buyers who respond to Bozo\'s leather will likely have passed through stores like this. Understanding their eye is understanding the audience.',
-  },
-  'Files London': {
-    cls: 'pt-r', cat: 'r', catLabel: 'Reference point',
-    desc: 'East London, appointment-only. Curated designer archive vintage — CDG, 90s Chanel, Stone Island, Gaultier, Prada rarities. 105K followers.',
-    why: 'Shows how the vintage-as-luxury market thinks about quality and provenance. The buyers who visit Files have developed an eye for material and construction that is exactly Bozo\'s target audience.',
-  },
-  'Kakko Tokyo': {
-    cls: 'pt-r', cat: 'r', catLabel: 'Reference point',
-    desc: 'Tokyo. A store and art direction space. Art director Eve Lantana works across styling and spatial design. The space merges architecture thinking with object curation.',
-    why: 'Represents the taste formation happening in Tokyo that informs what Japanese buyers respond to. The crossover of clothing and spatial sensibility.',
-  },
-};
-
-// ─── MAPS ─────────────────────────────────────────────────────────────────────
-
-const MAPS = [
-  {
-    num: '01', title: 'Heritage depth vs. brand legibility',
-    desc: 'How historically rooted is the brand\'s identity — and how clearly does it communicate that to a buyer seeing it for the first time?',
-    axLeft: 'Shallow heritage', axRight: 'Deep heritage', axTop: 'Legible', axBottom: 'Opaque',
-    points: [
-      { name: 'Bozo', x: 72, y: 28 },
-      { name: 'The Row', x: 40, y: 82 },
-      { name: 'Visvim', x: 88, y: 55 },
-      { name: 'Auralee', x: 35, y: 72, lp: 'ur' },
-      { name: 'A.Presse', x: 55, y: 62, lp: 'dr' },
-      { name: 'Taiga Takahashi', x: 90, y: 45, lp: 'ul' },
-      { name: 'Niceness', x: 48, y: 50 },
-      { name: 'Heugn', x: 62, y: 38 },
-      { name: 'Conkers', x: 82, y: 68, lp: 'ul' },
-      { name: 'Oliver Church', x: 78, y: 32, lp: 'ul' },
-      { name: 'Senui Shirt', x: 85, y: 22 },
-      { name: 'Salon C. Lundman', x: 28, y: 75, lp: 'dr' },
-      { name: 'Gabriela Coll', x: 50, y: 35, lp: 'ul' },
-      { name: 'Lea Boberg', x: 22, y: 55 },
-      { name: 'Nahyat', x: 42, y: 18 },
-      { name: 'Gajiroc', x: 58, y: 30 },
-      { name: 'Bibliotherk', x: 38, y: 22, lp: 'ul' },
-      { name: 'Vuja Dé', x: 30, y: 40 },
-      { name: 'Luke Derrick', x: 42, y: 65, lp: 'dr' },
-      { name: 'De Dam Foundation', x: 18, y: 42 },
-      { name: 'Au Concours', x: 25, y: 28 },
-      { name: 'Les Six', x: 80, y: 22, lp: 'ul' },
-      { name: 'Files London', x: 72, y: 75, lp: 'ul' },
-      { name: 'Final Layer Berlin', x: 68, y: 68 },
-      { name: 'Kakko Tokyo', x: 45, y: 30 },
-    ]
-  },
-  {
-    num: '02', title: 'Maker proximity vs. commercial ambition',
-    desc: 'How close is the garment to a single maker\'s hands — and how wide is the brand\'s market reach or ambition?',
-    axLeft: 'Industrial / scaled', axRight: 'Singular maker', axTop: 'Wide reach / ambitious', axBottom: 'Narrow / intentional',
-    points: [
-      { name: 'Bozo', x: 68, y: 52 },
-      { name: 'The Row', x: 20, y: 90 },
-      { name: 'Visvim', x: 55, y: 72 },
-      { name: 'Auralee', x: 28, y: 82 },
-      { name: 'A.Presse', x: 32, y: 70, lp: 'dl' },
-      { name: 'Taiga Takahashi', x: 62, y: 58, lp: 'ul' },
-      { name: 'Niceness', x: 25, y: 60 },
-      { name: 'Heugn', x: 38, y: 38 },
-      { name: 'Conkers', x: 70, y: 42, lp: 'ul' },
-      { name: 'Oliver Church', x: 96, y: 20, lp: 'ul' },
-      { name: 'Senui Shirt', x: 94, y: 14, lp: 'ul' },
-      { name: 'Salon C. Lundman', x: 30, y: 68, lp: 'dr' },
-      { name: 'Gabriela Coll', x: 72, y: 32, lp: 'ul' },
-      { name: 'Lea Boberg', x: 80, y: 28 },
-      { name: 'Nahyat', x: 88, y: 15, lp: 'ul' },
-      { name: 'Gajiroc', x: 90, y: 22 },
-      { name: 'Bibliotherk', x: 20, y: 35 },
-      { name: 'Vuja Dé', x: 22, y: 42 },
-      { name: 'Luke Derrick', x: 35, y: 55, lp: 'dr' },
-      { name: 'De Dam Foundation', x: 50, y: 25 },
-      { name: 'Au Concours', x: 75, y: 20, lp: 'ul' },
-      { name: 'Les Six', x: 65, y: 15, lp: 'ul' },
-    ]
-  },
-  {
-    num: '03', title: 'Cultural specificity vs. geographic ambition',
-    desc: 'How rooted is the brand in a specific place or culture — and how far does it reach or intend to reach?',
-    axLeft: 'Culturally neutral', axRight: 'Culturally specific', axTop: 'Global reach', axBottom: 'Local / intentionally narrow',
-    points: [
-      { name: 'Bozo', x: 75, y: 52 },
-      { name: 'The Row', x: 20, y: 92 },
-      { name: 'Visvim', x: 85, y: 78, lp: 'ul' },
-      { name: 'Auralee', x: 65, y: 82, lp: 'ul' },
-      { name: 'A.Presse', x: 60, y: 68, lp: 'ul' },
-      { name: 'Taiga Takahashi', x: 88, y: 55, lp: 'ul' },
-      { name: 'Niceness', x: 55, y: 62, lp: 'dr' },
-      { name: 'Heugn', x: 72, y: 40 },
-      { name: 'Conkers', x: 82, y: 45, lp: 'ul' },
-      { name: 'Oliver Church', x: 70, y: 25, lp: 'ul' },
-      { name: 'Senui Shirt', x: 90, y: 18, lp: 'ul' },
-      { name: 'Salon C. Lundman', x: 35, y: 72, lp: 'dr' },
-      { name: 'Gabriela Coll', x: 68, y: 35 },
-      { name: 'Lea Boberg', x: 30, y: 48 },
-      { name: 'Nahyat', x: 78, y: 15, lp: 'ul' },
-      { name: 'Gajiroc', x: 62, y: 42 },
-      { name: 'Bibliotherk', x: 55, y: 28, lp: 'ul' },
-      { name: 'Vuja Dé', x: 45, y: 38 },
-      { name: 'Luke Derrick', x: 38, y: 58, lp: 'dr' },
-      { name: 'De Dam Foundation', x: 50, y: 30 },
-      { name: 'Au Concours', x: 42, y: 32, lp: 'ul' },
-      { name: 'Les Six', x: 92, y: 22, lp: 'ul' },
-      { name: 'Final Layer Berlin', x: 60, y: 55, lp: 'dr' },
-      { name: 'Files London', x: 35, y: 65, lp: 'dr' },
-    ]
-  },
-  {
-    num: '04', title: 'Craft visibility vs. price point',
-    desc: 'Does the handwork and process announce itself in the garment — and what price tier does the brand occupy?',
-    axLeft: 'Entry / contemporary price', axRight: 'Designer / luxury price', axTop: 'Craft visible / announced', axBottom: 'Craft absorbed / invisible',
-    points: [
-      { name: 'Bozo', x: 75, y: 72 },
-      { name: 'The Row', x: 92, y: 25, lp: 'ul' },
-      { name: 'Visvim', x: 82, y: 78, lp: 'ul' },
-      { name: 'Auralee', x: 60, y: 35, lp: 'ul' },
-      { name: 'A.Presse', x: 52, y: 42 },
-      { name: 'Taiga Takahashi', x: 72, y: 82, lp: 'ul' },
-      { name: 'Niceness', x: 55, y: 55, lp: 'dr' },
-      { name: 'Heugn', x: 48, y: 48 },
-      { name: 'Conkers', x: 58, y: 85, lp: 'ul' },
-      { name: 'Oliver Church', x: 62, y: 92, lp: 'ul' },
-      { name: 'Senui Shirt', x: 44, y: 90 },
-      { name: 'Salon C. Lundman', x: 65, y: 40, lp: 'dr' },
-      { name: 'Gabriela Coll', x: 50, y: 60, lp: 'ul' },
-      { name: 'Lea Boberg', x: 55, y: 65 },
-      { name: 'Nahyat', x: 58, y: 88, lp: 'ul' },
-      { name: 'Gajiroc', x: 68, y: 80, lp: 'ul' },
-      { name: 'Bibliotherk', x: 40, y: 35 },
-      { name: 'Vuja Dé', x: 60, y: 38 },
-      { name: 'Luke Derrick', x: 58, y: 55, lp: 'dr' },
-      { name: 'De Dam Foundation', x: 30, y: 45 },
-      { name: 'Au Concours', x: 50, y: 62, lp: 'ul' },
-      { name: 'Les Six', x: 62, y: 72 },
-    ]
+  function showTab(id) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelector(`[onclick="showTab('${id}')"]`).classList.add('active');
+    document.getElementById(id).classList.add('active');
   }
-];
-
-// ─── RENDER MAPS ──────────────────────────────────────────────────────────────
-
-function safe(v, mn=6, mx=94) { return Math.min(mx, Math.max(mn, v)); }
-
-function buildMap(mapDef) {
-  const section = document.createElement('div');
-  section.className = 'map-section';
-
-  section.innerHTML = `
-    <div class="map-header">
-      <div class="map-num">Map ${mapDef.num}</div>
-      <div class="map-title">${mapDef.title}</div>
-      <div class="map-desc">${mapDef.desc}</div>
-    </div>
-    <div class="map-canvas">
-      <div class="ax-h"></div>
-      <div class="ax-v"></div>
-      <div class="ax-label ax-left">${mapDef.axLeft}</div>
-      <div class="ax-label ax-right">${mapDef.axRight}</div>
-      <div class="ax-label ax-top">${mapDef.axTop}</div>
-      <div class="ax-label ax-bottom">${mapDef.axBottom}</div>
-    </div>
-  `;
-
-  const canvas = section.querySelector('.map-canvas');
-
-  mapDef.points.forEach(pt => {
-    const brand = BRANDS[pt.name];
-    if (!brand) return;
-
-    const el = document.createElement('div');
-    el.className = 'pt ' + brand.cls;
-    el.style.left = safe(pt.x) + '%';
-    el.style.top = safe(100 - pt.y) + '%';
-
-    const dot = document.createElement('div');
-    dot.className = 'dot';
-    el.appendChild(dot);
-
-    const lbl = document.createElement('div');
-    lbl.className = 'lbl';
-    lbl.textContent = pt.name;
-
-    const lp = pt.lp || 'ur';
-    if (lp === 'ur') { lbl.style.left = '11px'; lbl.style.bottom = '10px'; }
-    else if (lp === 'ul') { lbl.style.right = '11px'; lbl.style.bottom = '10px'; lbl.style.textAlign = 'right'; }
-    else if (lp === 'dr') { lbl.style.left = '11px'; lbl.style.top = '10px'; }
-    else { lbl.style.right = '11px'; lbl.style.top = '10px'; lbl.style.textAlign = 'right'; }
-
-    el.appendChild(lbl);
-
-    el.addEventListener('mouseenter', e => showTooltip(e, pt.name, brand, mapDef.num));
-    el.addEventListener('mousemove', e => moveTooltip(e));
-    el.addEventListener('mouseleave', hideTooltip);
-
-    canvas.appendChild(el);
-  });
-
-  return section;
-}
-
-// Set top-offset so .main fills exactly the remaining viewport height
-function setTopOffset() {
-  const h = document.querySelector('header');
-  const intro = document.querySelector('.intro');
-  const leg = document.querySelector('.legend-bar');
-  const total = (h ? h.offsetHeight : 0) + (intro ? intro.offsetHeight : 0) + (leg ? leg.offsetHeight : 0);
-  document.documentElement.style.setProperty('--top-offset', total + 'px');
-  document.querySelector('.main').style.height = (window.innerHeight - total) + 'px';
-}
-setTopOffset();
-window.addEventListener('resize', setTopOffset);
-
-const mapsCol = document.getElementById('maps-col');
-MAPS.forEach((mapDef, i) => {
-  if (i > 0) {
-    const div = document.createElement('div');
-    div.className = 'map-divider';
-    mapsCol.appendChild(div);
-  }
-  mapsCol.appendChild(buildMap(mapDef));
-});
-
-// ─── TOOLTIP ─────────────────────────────────────────────────────────────────
-
-const tooltip = document.getElementById('tooltip');
-const ttName = document.getElementById('tt-name');
-const ttDesc = document.getElementById('tt-desc');
-const ttWhy  = document.getElementById('tt-why');
-
-function showTooltip(e, name, brand, mapNum) {
-  const catLabels = { bozo: 'Bozo', a: 'Material / craft anchor', b: 'Heritage-led', c: 'Concept-led', d: 'Reference brand', r: 'Reference point' };
-  const catLabel = catLabels[brand.cat] || '';
-
-  ttName.innerHTML = `${name} <span class="tt-cat cat-${brand.cat}">${catLabel}</span>`;
-
-  let desc = brand.desc || '';
-  let why = brand.why || '';
-
-  if (brand.cat === 'bozo' && mapNum && BOZO_MAP_DESC[mapNum]) {
-    desc = BOZO_MAP_DESC[mapNum].desc;
-    why = BOZO_MAP_DESC[mapNum].why;
-  }
-
-  ttDesc.textContent = desc;
-  if (why) {
-    ttWhy.textContent = why;
-    ttWhy.style.display = 'block';
-  } else {
-    ttWhy.style.display = 'none';
-  }
-
-  tooltip.classList.add('visible');
-  moveTooltip(e);
-}
-
-function moveTooltip(e) {
-  const pad = 14;
-  const tw = 270;
-  const th = tooltip.offsetHeight || 120;
-  let x = e.clientX + pad;
-  let y = e.clientY - th / 2;
-
-  if (x + tw > window.innerWidth - 10) x = e.clientX - tw - pad;
-  if (y < 10) y = 10;
-  if (y + th > window.innerHeight - 10) y = window.innerHeight - th - 10;
-
-  tooltip.style.left = x + 'px';
-  tooltip.style.top  = y + 'px';
-}
-
-function hideTooltip() {
-  tooltip.classList.remove('visible');
-}
-
-// ─── NOTES ───────────────────────────────────────────────────────────────────
-
-let notes = JSON.parse(localStorage.getItem('bozo-notes') || '[]');
-
-function renderNotes() {
-  const area = document.getElementById('notes-area');
-  const prompt = area.querySelector('.notes-prompt');
-
-  area.querySelectorAll('.note-entry').forEach(n => n.remove());
-
-  if (notes.length === 0) {
-    if (prompt) prompt.style.display = 'block';
-    return;
-  }
-  if (prompt) prompt.style.display = 'none';
-
-  notes.forEach((note, i) => {
-    const entry = document.createElement('div');
-    entry.className = 'note-entry';
-    entry.innerHTML = `
-      <div class="note-meta">
-        <span>${note.time}</span>
-        <button class="note-delete" onclick="deleteNote(${i})">×</button>
-      </div>
-      <div class="note-text">${note.text}</div>
-    `;
-    area.appendChild(entry);
-  });
-}
-
-function addNote() {
-  const input = document.getElementById('note-input');
-  const text = input.value.trim();
-  if (!text) return;
-
-  const now = new Date();
-  const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-  notes.push({ text: escHtml(text), time });
-  localStorage.setItem('bozo-notes', JSON.stringify(notes));
-  input.value = '';
-  renderNotes();
-
-  const area = document.getElementById('notes-area');
-  area.scrollTop = area.scrollHeight;
-}
-
-function deleteNote(i) {
-  notes.splice(i, 1);
-  localStorage.setItem('bozo-notes', JSON.stringify(notes));
-  renderNotes();
-}
-
-function clearNotes() {
-  if (!notes.length) return;
-  if (confirm('Clear all notes?')) {
-    notes = [];
-    localStorage.setItem('bozo-notes', JSON.stringify(notes));
-    renderNotes();
-  }
-}
-
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-document.getElementById('note-input').addEventListener('keydown', e => {
-  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') addNote();
-});
-
-renderNotes();
 </script>
 </body>
 </html>
