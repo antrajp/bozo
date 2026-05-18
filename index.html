@@ -17,6 +17,7 @@
     --tag-bg: #e8e4de;
     --now: #c8441a;
     --target: #2b5c3a;
+    --done: #7a9a82;
     --font: 'Times New Roman', Georgia, serif;
     --mono: 'Courier New', monospace;
   }
@@ -32,7 +33,6 @@
     min-height: 100vh;
   }
 
-  /* HEADER */
   header {
     border-bottom: 1px solid var(--border);
     padding: 28px 40px 20px;
@@ -60,23 +60,41 @@
     letter-spacing: 0.06em;
   }
 
-  .status-pill {
+  .header-right {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  .today-pill {
     font-family: var(--mono);
     font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    background: var(--bozo);
-    color: #fff;
+    letter-spacing: 0.06em;
+    color: var(--bozo);
+    border: 1px solid var(--bozo);
     padding: 3px 10px;
     border-radius: 2px;
   }
 
-  /* NAV TABS */
+  .week-pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 3px 10px;
+    border-radius: 2px;
+  }
+
   nav {
     display: flex;
     gap: 0;
     border-bottom: 1px solid var(--border);
     padding: 0 40px;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
   }
 
   .tab {
@@ -95,11 +113,9 @@
   .tab:hover { color: var(--ink); }
   .tab.active { color: var(--ink); border-bottom-color: var(--ink); }
 
-  /* SECTIONS */
   .section { display: none; padding: 40px; }
   .section.active { display: block; }
 
-  /* SECTION TITLES */
   .section-title {
     font-family: var(--mono);
     font-size: 10px;
@@ -111,49 +127,177 @@
     border-bottom: 1px solid var(--border);
   }
 
-  /* BRAND PAGE */
-  .brand-body {
-    max-width: 640px;
+  /* ─── GANTT ─── */
+  .gantt-wrap {
+    margin-bottom: 48px;
+    overflow-x: auto;
+  }
+
+  .gantt-header {
     display: flex;
-    flex-direction: column;
-    gap: 40px;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 20px;
   }
 
-  .brand-block {
-    display: grid;
-    grid-template-columns: 160px 1fr;
-    gap: 24px;
-    align-items: start;
-  }
-
-  .brand-label {
+  .gantt-legend {
+    display: flex;
+    gap: 16px;
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink3);
+  }
+
+  .gantt-legend-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+
+  .gantt-chart {
+    position: relative;
+    min-width: 700px;
+  }
+
+  .gantt-dates {
+    display: flex;
+    margin-left: 200px;
+    position: relative;
+    height: 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2px;
+  }
+
+  .gantt-date-tick {
+    position: absolute;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    color: var(--ink3);
+    transform: translateX(-50%);
+    top: 4px;
+  }
+
+  .gantt-today-line {
+    position: absolute;
+    top: 0;
+    width: 0;
+    border-left: 1.5px solid var(--bozo);
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .gantt-today-label {
+    position: absolute;
+    top: -18px;
+    left: -12px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--bozo);
+    white-space: nowrap;
+  }
+
+  .gantt-pfw-band {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: rgba(43, 92, 58, 0.06);
+    border-left: 1px solid rgba(43, 92, 58, 0.15);
+    border-right: 1px solid rgba(43, 92, 58, 0.15);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .gantt-pfw-label {
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--target);
+    white-space: nowrap;
+  }
+
+  .gantt-section-label {
+    font-family: var(--mono);
+    font-size: 9px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--ink3);
-    padding-top: 3px;
+    margin: 12px 0 6px;
   }
 
-  .brand-block p {
-    font-size: 15px;
-    line-height: 1.75;
+  .gantt-row {
+    display: flex;
+    align-items: center;
+    height: 28px;
+  }
+
+  .gantt-row-label {
+    width: 200px;
+    min-width: 200px;
+    padding-right: 16px;
+    text-align: right;
+    font-size: 12px;
     color: var(--ink2);
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .brand-convergence .brand-label { color: var(--ink); }
-  .brand-convergence p { color: var(--ink); font-size: 16px; }
+  .gantt-row-bar-area {
+    flex: 1;
+    position: relative;
+    height: 100%;
+  }
 
-  /* PLAN SECTION */
+  .gantt-bar {
+    position: absolute;
+    top: 6px;
+    height: 16px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    padding-left: 6px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .gantt-bar.owner-max { background: var(--ink); color: var(--bg); }
+  .gantt-bar.owner-noam { background: var(--tag-bg); border: 1px solid var(--border); color: var(--ink2); }
+  .gantt-bar.owner-both { background: var(--bozo); color: #fff; }
+
+  .gantt-bar.is-past { opacity: 0.45; }
+
+  .gantt-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 0 4px 200px;
+  }
+
+  /* ─── TIMELINE ─── */
   .timeline {
     display: grid;
     grid-template-columns: 120px 1fr;
     gap: 0;
   }
 
-  .tl-block {
-    display: contents;
-  }
+  .tl-block { display: contents; }
 
   .tl-date {
     font-family: var(--mono);
@@ -178,6 +322,8 @@
 
   .tl-block.urgent .tl-date::after { background: var(--bozo); }
   .tl-block.key .tl-date::after { background: var(--ink); }
+  .tl-block.done .tl-date::after { background: var(--done); }
+  .tl-block.done .tl-date { color: var(--ink3); }
 
   .tl-content {
     padding: 20px 0 20px 28px;
@@ -185,6 +331,8 @@
   }
 
   .tl-date { border-bottom: 1px solid var(--border); }
+
+  .tl-block.done .tl-content { opacity: 0.5; }
 
   .kpi-ref {
     font-family: var(--mono);
@@ -202,10 +350,23 @@
     color: var(--ink);
   }
 
-  .tl-heading em {
-    font-style: normal;
-    color: var(--bozo);
+  .tl-heading em { font-style: normal; color: var(--bozo); }
+
+  .week-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-left: 8px;
+    vertical-align: middle;
   }
+
+  .week-tag.current { background: var(--bozo); color: #fff; }
+  .week-tag.past { background: var(--done); color: #fff; }
+  .week-tag.upcoming { background: var(--tag-bg); color: var(--ink3); }
 
   .tasks {
     display: flex;
@@ -238,7 +399,7 @@
   .owner-m { background: var(--ink); color: #fff; }
   .owner-both { background: var(--bozo); color: #fff; }
 
-  /* MAPS SECTION */
+  /* ─── MAPS ─── */
   .maps-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -277,21 +438,8 @@
     margin-bottom: 12px;
   }
 
-  .axis-h {
-    position: absolute;
-    left: 8%; right: 8%;
-    top: 50%;
-    height: 0.5px;
-    background: var(--border);
-  }
-
-  .axis-v {
-    position: absolute;
-    top: 8%; bottom: 8%;
-    left: 50%;
-    width: 0.5px;
-    background: var(--border);
-  }
+  .axis-h { position: absolute; left: 8%; right: 8%; top: 50%; height: 0.5px; background: var(--border); }
+  .axis-v { position: absolute; top: 8%; bottom: 8%; left: 50%; width: 0.5px; background: var(--border); }
 
   .ax-label {
     position: absolute;
@@ -313,38 +461,14 @@
     height: 8px;
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    cursor: default;
   }
 
-  .dot-now {
-    background: var(--now);
-    box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--now);
-  }
+  .dot-now { background: var(--now); box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--now); }
+  .dot-target { background: var(--target); box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--target); }
 
-  .dot-target {
-    background: var(--target);
-    box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--target);
-  }
+  .arrow-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
 
-  .dot-arrow {
-    position: absolute;
-    pointer-events: none;
-  }
-
-  .dot-label {
-    position: absolute;
-    font-family: var(--mono);
-    font-size: 8.5px;
-    letter-spacing: 0.04em;
-    color: var(--ink2);
-    white-space: nowrap;
-    transform: translate(-50%, 8px);
-  }
-
-  .map-legend {
-    display: flex;
-    gap: 16px;
-  }
+  .map-legend { display: flex; gap: 16px; }
 
   .legend-item {
     display: flex;
@@ -357,11 +481,7 @@
     color: var(--ink3);
   }
 
-  .legend-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
+  .legend-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
   .map-note {
     margin-top: 10px;
@@ -371,7 +491,7 @@
     line-height: 1.5;
   }
 
-  /* TAGS SECTION */
+  /* ─── TAGS ─── */
   .tags-intro {
     max-width: 600px;
     font-size: 14px;
@@ -413,9 +533,7 @@
     padding: 20px;
   }
 
-  .tag-info {
-    padding: 12px 14px;
-  }
+  .tag-info { padding: 12px 14px; }
 
   .tag-name {
     font-family: var(--mono);
@@ -470,99 +588,20 @@
     font-family: var(--mono);
   }
 
-  /* LABEL TIMELINE */
-  .label-timeline {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 24px 28px;
-    margin-top: 32px;
+  /* ─── SCROLL ANCHOR OFFSET ─── */
+  .week-anchor {
+    scroll-margin-top: 60px;
   }
 
-  .label-timeline-title {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink3);
-    margin-bottom: 20px;
-  }
-
-  .label-steps {
-    display: flex;
-    align-items: flex-start;
-    gap: 0;
-    position: relative;
-  }
-
-  .label-step {
-    flex: 1;
-    text-align: center;
-    position: relative;
-    padding: 0 8px;
-  }
-
-  .label-step::before {
-    content: '';
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    right: -50%;
-    height: 1px;
-    background: var(--border);
-    z-index: 0;
-  }
-
-  .label-step:last-child::before { display: none; }
-
-  .step-dot {
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    background: var(--bg);
-    border: 1.5px solid var(--border);
-    margin: 0 auto 8px;
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .step-dot.urgent { border-color: var(--bozo); background: var(--bozo); }
-  .step-dot.done { border-color: var(--target); background: var(--target); }
-
-  .step-date {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.06em;
-    color: var(--ink3);
-    margin-bottom: 4px;
-  }
-
-  .step-label {
-    font-size: 12px;
-    color: var(--ink2);
-    line-height: 1.4;
-  }
-
-  /* ARROW SVG */
-  .arrow-svg {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    overflow: visible;
-  }
-
-  /* RESPONSIVE */
   @media (max-width: 800px) {
-    header { padding: 20px; }
+    header { padding: 20px; flex-direction: column; gap: 10px; }
     nav { padding: 0 20px; }
     .section { padding: 24px 20px; }
     .maps-grid { grid-template-columns: 1fr; }
     .tags-grid { grid-template-columns: 1fr 1fr; }
-    .label-steps { flex-direction: column; gap: 16px; }
-    .label-step::before { display: none; }
+    .gantt-row-label { width: 160px; min-width: 160px; font-size: 11px; }
+    .gantt-dates { margin-left: 160px; }
+    .gantt-divider { margin-left: 160px; }
   }
 </style>
 </head>
@@ -573,315 +612,211 @@
     <h1>BOZO Paris — Working Reference</h1>
     <span class="header-meta">Antra × Noam Elfassi &nbsp;·&nbsp; SS27</span>
   </div>
+  <div class="header-right">
+    <span class="today-pill" id="headerDate"></span>
+    <span class="week-pill" id="headerWeek"></span>
+  </div>
 </header>
 
 <nav>
   <div class="tab active" onclick="showTab('plan')">Plan</div>
+  <div class="tab" onclick="showTab('maps')">Maps</div>
+  <div class="tab" onclick="showTab('tags')">Tags</div>
 </nav>
 
-<!-- ═══════════════════════════════ PLAN ═══════════════════════════════ -->
+<!-- ═══════════════════ PLAN ═══════════════════ -->
 <div class="section active" id="plan">
-  <div class="section-title">60-Day Plan — Now → Paris (June 23) &nbsp;·&nbsp; Weekly breakdown</div>
+
+  <!-- GANTT CHART -->
+  <div class="gantt-wrap">
+    <div class="gantt-header">
+      <div class="section-title" style="margin-bottom:0; border-bottom:none; padding-bottom:0;">Hard deadlines — Now → Paris (June 23–28)</div>
+      <div class="gantt-legend">
+        <span><span class="gantt-legend-dot" style="background:var(--ink);"></span> Max</span>
+        <span><span class="gantt-legend-dot" style="background:var(--tag-bg); border: 1px solid var(--border);"></span> Noam</span>
+        <span><span class="gantt-legend-dot" style="background:var(--bozo);"></span> Both</span>
+      </div>
+    </div>
+
+    <div class="gantt-chart" id="ganttChart"></div>
+  </div>
+
+  <!-- WEEK BY WEEK -->
+  <div class="section-title">Weekly breakdown — 60 days, now → Paris</div>
 
   <div class="timeline">
 
-    <!-- WEEK 1 (PAST) -->
-    <div class="tl-block">
+    <!-- WEEK 1 -->
+    <div class="tl-block week-anchor" id="wk1">
       <div class="tl-date">Wk 1<br>Apr 28–May 2</div>
       <div class="tl-content">
-        <div class="tl-heading">Kickoff — <em>completed</em></div>
+        <div class="tl-heading">Kickoff</div>
         <div class="kpi-ref">✓ First review call · Positioning maps walked through · Workflow planned</div>
         <div class="tasks">
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            SS27 first sample review — walked through available shapes, what's confirmed, what's still moving
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Aligned on brand positioning maps — current vs. aspirational across four axes, general direction
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Established ideal working rhythm and communication cadence — how we move forward over next 8 weeks
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Discussed tagging and SKU thinking — established the logic we'll build on
-          </div>
+          <div class="task"><span class="task-owner owner-both">Both</span> SS27 first sample review — walked through available shapes, what's confirmed, what's still moving</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Aligned on brand positioning maps — current vs. aspirational across four axes, general direction</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Established ideal working rhythm and communication cadence</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Discussed tagging and SKU thinking — established the logic we'll build on</div>
         </div>
       </div>
     </div>
 
-    <!-- WEEK 2 (NOW) -->
-    <div class="tl-block urgent">
+    <!-- WEEK 2 -->
+    <div class="tl-block week-anchor" id="wk2">
       <div class="tl-date">Wk 2<br>May 5–9</div>
       <div class="tl-content">
-        <div class="tl-heading">Assets + wholesale structure — <em>this week</em></div>
-        <div class="kpi-ref">→ KPIs: Brand positioning document begun · Wholesale system drafted · Target retailer list initiated</div>
+        <div class="tl-heading">Assets + wholesale structure</div>
+        <div class="kpi-ref">✓ Brand positioning document begun · Wholesale system drafted · Target retailer list initiated</div>
         <div class="tasks">
-          <div class="task">
-            <span class="task-owner owner-n">Noam</span>
-            Send any further archive material from the Fez studio — photographs, garments, hardware references, anything not yet shared
-          </div>
-          <div class="task">
-            <span class="task-owner owner-n">Noam</span>
-            Send raw costing data: production costs, material costs, current pricing thinking
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Build costing document together — Max helps structure wholesale pricing, margins, MOQs, payment terms from Noam's data
-          </div>
-          <div class="task">
-            <span class="task-owner owner-m">Max</span>
-            Define target retailer list by EOW — store-by-store, segmented by market, with profile and outreach rationale per account
-          </div>
-          <div class="task">
-            <span class="task-owner owner-m">Max</span>
-            Brand language document draft: how BOZO describes itself — condensed, precise, speakable in an appointment
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Wholesale assets audit: line sheet structure, terms sheet, order form — what exists, what needs building or rebuilding
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Work on base labels for garments — explore direction, typographic approach, execution method. Archive references as starting point.
-          </div>
+          <div class="task"><span class="task-owner owner-n">Noam</span> Send any further archive material from the Fez studio</div>
+          <div class="task"><span class="task-owner owner-n">Noam</span> Send raw costing data: production costs, material costs, current pricing thinking</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Build costing document together — Max structures wholesale pricing, margins, MOQs, terms from Noam's data</div>
+          <div class="task"><span class="task-owner owner-m">Max</span> Define target retailer list — store-by-store, segmented by market, with profile and outreach rationale per account</div>
+          <div class="task"><span class="task-owner owner-m">Max</span> Brand language document draft: how BOZO describes itself</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Wholesale assets audit: line sheet structure, terms sheet, order form</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Work on base labels for garments — direction, typographic approach, execution method</div>
         </div>
       </div>
     </div>
 
     <!-- WEEK 3 -->
-    <div class="tl-block">
+    <div class="tl-block week-anchor" id="wk3">
       <div class="tl-date">Wk 3<br>May 12–16</div>
       <div class="tl-content">
         <div class="tl-heading">Retailer list finalised + content strategy</div>
-        <div class="kpi-ref">→ KPIs: Buyer outreach initiated with right retailers · Japanese landscape mapped · Content narrative begun</div>
+        <div class="kpi-ref">✓ Buyer outreach initiated · Japanese landscape mapped · Content narrative begun</div>
         <div class="tasks">
-          <div class="task">
-            <span class="task-owner owner-m">Max</span>
-            Finalise retailer list with outreach rationale — comment on strategy per store, confirm tier 1 targets, align with Noam
-          </div>
-          <div class="task">
-            <span class="task-owner owner-m">Max</span>
-            Align with Kosuke (Le Loup) on Japanese retailer landscape — what's available given his SS27 exclusivity, who to approach for future
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Consider adjacent content strategy for FW26 — how to softly promote, tease what's coming, align imagery and narrative for the upcoming season without announcement
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            SS27 teaser approach — what's available now, how to introduce it, positioning relative to FW26 just ending
-          </div>
-          <div class="task">
-            <span class="task-owner owner-m">Max</span>
-            Begin buyer outreach — personalised per account, early conversations. Not appointment requests yet, relationship first.
-          </div>
+          <div class="task"><span class="task-owner owner-m">Max</span> Finalise retailer list with outreach rationale — comment on strategy per store, confirm tier 1 targets</div>
+          <div class="task"><span class="task-owner owner-m">Max</span> Align with Kosuke (Le Loup) on Japanese retailer landscape</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Consider adjacent content strategy for FW26</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> SS27 teaser approach — what's available now, positioning relative to FW26 just ending</div>
+          <div class="task"><span class="task-owner owner-m">Max</span> Begin buyer outreach — personalised per account, relationship first</div>
         </div>
       </div>
     </div>
 
-    <!-- WEEK 4 -->
-    <div class="tl-block">
+    <!-- WEEK 4 — CURRENT -->
+    <div class="tl-block week-anchor" id="wk4">
       <div class="tl-date">Wk 4<br>May 19–23</div>
       <div class="tl-content">
         <div class="tl-heading">Line sheet + soft seeding</div>
         <div class="kpi-ref">→ KPIs: Wholesale pricing and terms confirmed · Soft seeding with priority retailers · Brand positioning locked</div>
         <div class="tasks">
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Line sheet first draft — categories clean, hero pieces identified, pricing confirmed, order of presentation agreed
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Soft seeding with priority retailers and aligned PR where relevant — not a press release, targeted conversations
-          </div>
-          <div class="task">
-            <span class="task-owner owner-n">Noam</span>
-            Confirm SS27 collection is locked — no further additions. What's in is in.
-          </div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Line sheet first draft — categories clean, hero pieces identified, pricing confirmed, order of presentation agreed</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Soft seeding with priority retailers and aligned PR where relevant — targeted conversations</div>
+          <div class="task"><span class="task-owner owner-n">Noam</span> Confirm SS27 collection is locked — no further additions. What's in is in.</div>
         </div>
       </div>
     </div>
 
     <!-- WEEK 5 -->
-    <div class="tl-block">
+    <div class="tl-block week-anchor" id="wk5">
       <div class="tl-date">Wk 5<br>May 26–30</div>
       <div class="tl-content">
         <div class="tl-heading">Showroom concept + pipeline building</div>
-        <div class="kpi-ref">→ KPIs: Showroom presence reads as considered brand experience · Appointment pipeline forming · Buyer communication tone established</div>
+        <div class="kpi-ref">→ KPIs: Showroom reads as considered brand experience · Appointment pipeline forming · Buyer tone established</div>
         <div class="tasks">
-          <div class="task">
-            <span class="task-owner owner-m">Max</span>
-            Showroom concept document — garment selection logic, appointment flow, how the space reads on arrival
-          </div>
-          <div class="task">
-            <span class="task-owner owner-m">Max</span>
-            Follow up all outreach — qualify interest, move toward appointment conversations
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Merchandising review: key looks defined, how the collection is sequenced on the rail and spoken about
-          </div>
+          <div class="task"><span class="task-owner owner-m">Max</span> Showroom concept document — garment selection logic, appointment flow, how the space reads on arrival</div>
+          <div class="task"><span class="task-owner owner-m">Max</span> Follow up all outreach — qualify interest, move toward appointment conversations</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Merchandising review: key looks defined, how collection is sequenced on the rail</div>
         </div>
       </div>
     </div>
 
     <!-- WEEK 6 -->
-    <div class="tl-block">
+    <div class="tl-block week-anchor" id="wk6">
       <div class="tl-date">Wk 6<br>June 2–6</div>
       <div class="tl-content">
         <div class="tl-heading">Appointments confirmed + prep deepens</div>
-        <div class="kpi-ref">→ KPIs: Right retailers approached with the right message · Appointment calendar taking shape · Pre-appointment system in place</div>
+        <div class="kpi-ref">→ KPIs: Right retailers approached · Appointment calendar taking shape · Pre-appointment system in place</div>
         <div class="tasks">
-          <div class="task">
-            <span class="task-owner owner-m">Max</span>
-            Convert pipeline to confirmed appointments — build June 23–28 calendar, plug gaps
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Pre-appointment accommodation system: briefing template, timing, responsibility — what gets sent to each buyer before they arrive
-          </div>
-          <div class="task">
-            <span class="task-owner owner-n">Noam</span>
-            All garments confirmed for Paris — production, packaging, shipping window locked
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Shortlist potential FW27 agents — identify who to build toward during showroom week
-          </div>
+          <div class="task"><span class="task-owner owner-m">Max</span> Convert pipeline to confirmed appointments — build June 23–28 calendar, plug gaps</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Pre-appointment accommodation system: briefing template, timing, responsibility</div>
+          <div class="task"><span class="task-owner owner-n">Noam</span> All garments confirmed for Paris — production, packaging, shipping window locked</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Shortlist potential FW27 agents</div>
         </div>
       </div>
     </div>
 
     <!-- WEEK 7 -->
-    <div class="tl-block">
+    <div class="tl-block week-anchor" id="wk7">
       <div class="tl-date">Wk 7<br>June 9–13</div>
       <div class="tl-content">
         <div class="tl-heading">Final assets + rehearsal</div>
-        <div class="kpi-ref">→ KPIs: Buyer communications finalised · Collection story speakable and consistent · All assets print-ready</div>
+        <div class="kpi-ref">→ KPIs: Buyer comms finalised · Collection story speakable · All assets print-ready</div>
         <div class="tasks">
-          <div class="task">
-            <span class="task-owner owner-m">Max</span>
-            Briefing documents finalised and sent to confirmed buyers ahead of appointments
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Full run-through of buyer appointment: what's said, what's shown, how price is introduced, how questions are handled
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Line sheet, terms, order form — final versions, print-ready and digital
-          </div>
+          <div class="task"><span class="task-owner owner-m">Max</span> Briefing documents finalised and sent to confirmed buyers</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Full run-through of buyer appointment: what's said, shown, how price is introduced</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Line sheet, terms, order form — final versions, print-ready and digital</div>
         </div>
       </div>
     </div>
 
     <!-- WEEK 8 -->
-    <div class="tl-block">
+    <div class="tl-block week-anchor" id="wk8">
       <div class="tl-date">Wk 8<br>June 16–20</div>
       <div class="tl-content">
         <div class="tl-heading">Paris ready</div>
         <div class="kpi-ref">→ KPIs: Showroom experience finalised · Garments in Paris · Max on the ground</div>
         <div class="tasks">
-          <div class="task">
-            <span class="task-owner owner-n">Noam</span>
-            All garments in Paris — steamed, organised, sequenced. Packaging and presentation confirmed.
-          </div>
-          <div class="task">
-            <span class="task-owner owner-m">Max</span>
-            Arrive Paris — setup, final walkthrough of appointment flow with Noam
-          </div>
-          <div class="task">
-            <span class="task-owner owner-m">Max</span>
-            Last-minute appointment follow-ups — confirm all times, send reminders
-          </div>
+          <div class="task"><span class="task-owner owner-n">Noam</span> All garments in Paris — steamed, organised, sequenced</div>
+          <div class="task"><span class="task-owner owner-m">Max</span> Arrive Paris — setup, final walkthrough with Noam</div>
+          <div class="task"><span class="task-owner owner-m">Max</span> Last-minute appointment follow-ups — confirm times, send reminders</div>
         </div>
       </div>
     </div>
 
     <!-- PARIS -->
-    <div class="tl-block key">
+    <div class="tl-block key week-anchor" id="wk9">
       <div class="tl-date">June 23<br>— 28</div>
       <div class="tl-content">
         <div class="tl-heading">Paris Men's Fashion Week — <em>showroom open</em></div>
-        <div class="kpi-ref">→ KPIs: Impressions made to right retailers · Agent relationships built · Debrief structure in place for FW27</div>
+        <div class="kpi-ref">→ KPIs: Impressions to right retailers · Agent relationships built · Debrief structure for FW27</div>
         <div class="tasks">
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Buyer appointments — Max co-presenting throughout, not shadowing
-          </div>
-          <div class="task">
-            <span class="task-owner owner-m">Max</span>
-            Log feedback in real time: what buyers respond to, where hesitation sits, what questions recur
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            Build agent relationships during the week — conversations in appointment format where possible
-          </div>
-          <div class="task">
-            <span class="task-owner owner-both">Both</span>
-            End-of-week debrief: what landed, what didn't, what changes for FW27
-          </div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Buyer appointments — Max co-presenting throughout, not shadowing</div>
+          <div class="task"><span class="task-owner owner-m">Max</span> Log feedback in real time: what buyers respond to, hesitation, recurring questions</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> Build agent relationships during the week</div>
+          <div class="task"><span class="task-owner owner-both">Both</span> End-of-week debrief: what landed, what didn't, what changes for FW27</div>
         </div>
       </div>
     </div>
 
   </div>
 </div>
-<script>
-  function showTab(id) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelector(`[onclick="showTab('${id}')"]`).classList.add('active');
-    document.getElementById(id).classList.add('active');
-  }
-</script>
-</body>
-</html>
-  <div class="section-title">Brand Position — Now vs. Where We're Going</div>
 
+<!-- ═══════════════════ MAPS ═══════════════════ -->
+<div class="section" id="maps">
+  <div class="section-title">Brand position — Now vs. where we're going</div>
   <div class="maps-grid">
 
-    <!-- MAP 1: Heritage vs Legibility -->
     <div class="map-card">
       <div class="map-card-title">Map 01</div>
       <div class="map-card-axes">Heritage depth → Brand legibility</div>
-      <div class="map-canvas" id="mc1">
-        <div class="axis-h"></div>
-        <div class="axis-v"></div>
-        <div class="ax-label ax-l">Opaque</div>
-        <div class="ax-label ax-r">Legible</div>
-        <div class="ax-label ax-t">Deep Heritage</div>
-        <div class="ax-label ax-b">No Heritage</div>
-        <svg class="arrow-svg"><defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2b5c3a"/></marker></defs>
-          <line x1="38%" y1="34%" x2="48%" y2="28%" stroke="#2b5c3a" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr)"/>
-        </svg>
-        <div class="dot dot-now" style="left:38%;top:34%;" title="Now"></div>
-        <div class="dot dot-target" style="left:50%;top:27%;" title="Target"></div>
+      <div class="map-canvas">
+        <div class="axis-h"></div><div class="axis-v"></div>
+        <div class="ax-label ax-l">Opaque</div><div class="ax-label ax-r">Legible</div>
+        <div class="ax-label ax-t">Deep heritage</div><div class="ax-label ax-b">No heritage</div>
+        <svg class="arrow-svg"><defs><marker id="arr1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2b5c3a"/></marker></defs>
+          <line x1="38%" y1="34%" x2="48%" y2="28%" stroke="#2b5c3a" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr1)"/></svg>
+        <div class="dot dot-now" style="left:38%;top:34%;"></div>
+        <div class="dot dot-target" style="left:50%;top:27%;"></div>
       </div>
       <div class="map-legend">
         <div class="legend-item"><div class="legend-dot" style="background:var(--now)"></div> Now</div>
         <div class="legend-item"><div class="legend-dot" style="background:var(--target)"></div> Target</div>
       </div>
-      <div class="map-note">Heritage is there. The gap is legibility — how the story gets told, not the story itself. Small movement, high impact.</div>
+      <div class="map-note">Heritage is there. The gap is legibility — how the story gets told, not the story itself.</div>
     </div>
 
-    <!-- MAP 2: Maker vs Scale -->
     <div class="map-card">
       <div class="map-card-title">Map 02</div>
       <div class="map-card-axes">Maker proximity → Commercial ambition</div>
-      <div class="map-canvas" id="mc2">
-        <div class="axis-h"></div>
-        <div class="axis-v"></div>
-        <div class="ax-label ax-l">Singular maker</div>
-        <div class="ax-label ax-r">Industrial</div>
-        <div class="ax-label ax-t">Ambitious scale</div>
-        <div class="ax-label ax-b">Intentionally small</div>
+      <div class="map-canvas">
+        <div class="axis-h"></div><div class="axis-v"></div>
+        <div class="ax-label ax-l">Singular maker</div><div class="ax-label ax-r">Industrial</div>
+        <div class="ax-label ax-t">Ambitious scale</div><div class="ax-label ax-b">Intentionally small</div>
         <svg class="arrow-svg"><defs><marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2b5c3a"/></marker></defs>
-          <line x1="38%" y1="52%" x2="35%" y2="38%" stroke="#2b5c3a" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr2)"/>
-        </svg>
+          <line x1="38%" y1="52%" x2="35%" y2="38%" stroke="#2b5c3a" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr2)"/></svg>
         <div class="dot dot-now" style="left:38%;top:52%;"></div>
         <div class="dot dot-target" style="left:35%;top:37%;"></div>
       </div>
@@ -889,23 +824,18 @@
         <div class="legend-item"><div class="legend-dot" style="background:var(--now)"></div> Now</div>
         <div class="legend-item"><div class="legend-dot" style="background:var(--target)"></div> Target</div>
       </div>
-      <div class="map-note">Closer to Gabriela Coll i Garriga than to a factory brand. The artisanal process is real — it needs to be shown, not assumed.</div>
+      <div class="map-note">Closer to Gabriela Coll i Garriga than to a factory brand. The artisanal process is real — it needs to be shown.</div>
     </div>
 
-    <!-- MAP 3: Cultural vs Geographic -->
     <div class="map-card">
       <div class="map-card-title">Map 03</div>
       <div class="map-card-axes">Cultural specificity → Geographic reach</div>
-      <div class="map-canvas" id="mc3">
-        <div class="axis-h"></div>
-        <div class="axis-v"></div>
-        <div class="ax-label ax-l">Culturally specific</div>
-        <div class="ax-label ax-r">Universal</div>
-        <div class="ax-label ax-t">Global reach</div>
-        <div class="ax-label ax-b">Intentionally local</div>
+      <div class="map-canvas">
+        <div class="axis-h"></div><div class="axis-v"></div>
+        <div class="ax-label ax-l">Culturally specific</div><div class="ax-label ax-r">Universal</div>
+        <div class="ax-label ax-t">Global reach</div><div class="ax-label ax-b">Intentionally local</div>
         <svg class="arrow-svg"><defs><marker id="arr3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2b5c3a"/></marker></defs>
-          <line x1="52%" y1="50%" x2="44%" y2="40%" stroke="#2b5c3a" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
-        </svg>
+          <line x1="52%" y1="50%" x2="44%" y2="40%" stroke="#2b5c3a" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr3)"/></svg>
         <div class="dot dot-now" style="left:52%;top:50%;"></div>
         <div class="dot dot-target" style="left:44%;top:39%;"></div>
       </div>
@@ -913,23 +843,18 @@
         <div class="legend-item"><div class="legend-dot" style="background:var(--now)"></div> Now</div>
         <div class="legend-item"><div class="legend-dot" style="background:var(--target)"></div> Target</div>
       </div>
-      <div class="map-note">Morocco, Japan, France — the geography is already there. Making it legible without making it the whole story. Named but not branded.</div>
+      <div class="map-note">Morocco, Japan, France — the geography is already there. Named but not branded.</div>
     </div>
 
-    <!-- MAP 4: Craft vs Price -->
     <div class="map-card">
       <div class="map-card-title">Map 04</div>
       <div class="map-card-axes">Craft visibility → Price point</div>
-      <div class="map-canvas" id="mc4">
-        <div class="axis-h"></div>
-        <div class="axis-v"></div>
-        <div class="ax-label ax-l">Invisible craft</div>
-        <div class="ax-label ax-r">Visible craft</div>
-        <div class="ax-label ax-t">High price</div>
-        <div class="ax-label ax-b">Accessible</div>
+      <div class="map-canvas">
+        <div class="axis-h"></div><div class="axis-v"></div>
+        <div class="ax-label ax-l">Invisible craft</div><div class="ax-label ax-r">Visible craft</div>
+        <div class="ax-label ax-t">High price</div><div class="ax-label ax-b">Accessible</div>
         <svg class="arrow-svg"><defs><marker id="arr4" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2b5c3a"/></marker></defs>
-          <line x1="34%" y1="36%" x2="55%" y2="36%" stroke="#2b5c3a" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr4)"/>
-        </svg>
+          <line x1="34%" y1="36%" x2="55%" y2="36%" stroke="#2b5c3a" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr4)"/></svg>
         <div class="dot dot-now" style="left:34%;top:36%;"></div>
         <div class="dot dot-target" style="left:57%;top:36%;"></div>
       </div>
@@ -937,71 +862,222 @@
         <div class="legend-item"><div class="legend-dot" style="background:var(--now)"></div> Now</div>
         <div class="legend-item"><div class="legend-dot" style="background:var(--target)"></div> Target</div>
       </div>
-      <div class="map-note">Price point is justified by the material — the craft just isn't yet visible enough to make it feel inevitable. Tags, labels, presentation all close this gap.</div>
+      <div class="map-note">Price is justified by the material — the craft just isn't yet visible enough to make it feel inevitable.</div>
     </div>
 
   </div>
 </div>
 
-<!-- ═══════════════════════════════ TAGS ═══════════════════════════════ -->
+<!-- ═══════════════════ TAGS ═══════════════════ -->
 <div class="section" id="tags">
-  <div class="section-title">Tagging + SKU Reference</div>
+  <div class="section-title">Tagging + SKU reference</div>
 
-  <p class="tags-intro">To work through together — not a blocker, not a main event. The tagging system and SKU logic need to be simple and scalable from day one. Archive references below as working material. Labels are handled separately by Noam; what's here is directional context.</p>
+  <p class="tags-intro">To work through together — not a blocker, not a main event. The tagging system and SKU logic need to be simple and scalable from day one. Archive references below as working material.</p>
 
   <div class="tags-grid">
-
     <div class="tag-card">
-      <div class="tag-img">
-        <div class="tag-img-placeholder">Archive Ref 01<br>— add image —</div>
-      </div>
+      <div class="tag-img"><div class="tag-img-placeholder">Archive ref 01<br>— add image —</div></div>
       <div class="tag-info">
-        <div class="tag-name">Armand Elfassi Archive</div>
+        <div class="tag-name">Armand Elfassi archive</div>
         <div class="tag-desc">Original Bozo label — woven, serif typeface, Made in France. Register and texture worth studying as reference for tone, not reproduction.</div>
       </div>
     </div>
-
     <div class="tag-card">
-      <div class="tag-img">
-        <div class="tag-img-placeholder">Archive Ref 02<br>— add image —</div>
-      </div>
+      <div class="tag-img"><div class="tag-img-placeholder">Archive ref 02<br>— add image —</div></div>
       <div class="tag-info">
-        <div class="tag-name">Archive Jacket Tag</div>
+        <div class="tag-name">Archive jacket tag</div>
         <div class="tag-desc">Found on the German eBay archive piece. Stitching method and restrained logo placement are the relevant notes.</div>
       </div>
     </div>
-
     <div class="tag-card">
-      <div class="tag-img">
-        <div class="tag-img-placeholder">Reference 03<br>— add image —</div>
-      </div>
+      <div class="tag-img"><div class="tag-img-placeholder">Reference 03<br>— add image —</div></div>
       <div class="tag-info">
-        <div class="tag-name">Comp References</div>
+        <div class="tag-name">Comp references</div>
         <div class="tag-desc">A-PRESSE, The Row, Hugan — labels that make a garment feel finished on contact. Quiet, confident, not decorative.</div>
       </div>
     </div>
-
   </div>
 
   <div class="tag-direction">
-    <div class="tag-direction-title">SKU System — working principles</div>
+    <div class="tag-direction-title">SKU system — working principles</div>
     <div class="direction-points">
       <div class="direction-point">Keep it readable by category: leather / denim / jersey / outerwear as the primary tier, season and number as secondary. e.g. BZ-LJ-SS27-001.</div>
       <div class="direction-point">Origin should be encoded or at least traceable — Japan vs. Morocco vs. France production matters for pricing, terms, and storytelling.</div>
-      <div class="direction-point">Consider a numbered edition flag for one-off leather pieces where the material won't repeat. Adds scarcity without claiming it explicitly.</div>
+      <div class="direction-point">Consider a numbered edition flag for one-off leather pieces where the material won't repeat.</div>
       <div class="direction-point">The system should sit comfortably on a line sheet from day one — categories clean, no ambiguity for buyers.</div>
     </div>
   </div>
-
 </div>
 
 <script>
-  function showTab(id) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelector(`[onclick="showTab('${id}')"]`).classList.add('active');
-    document.getElementById(id).classList.add('active');
+function showTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelector(`[onclick="showTab('${id}')"]`).classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+(function buildGantt() {
+  var START = new Date(2026, 4, 18);
+  var END   = new Date(2026, 5, 28);
+  var totalDays = (END - START) / 864e5;
+
+  function pct(d) { return ((d / totalDays) * 100).toFixed(2) + '%'; }
+  function dayOff(ds) { return (new Date(ds) - START) / 864e5; }
+
+  var critical = [
+    { date:'2026-05-24', end:null,         label:'Showroom direction locked',        owner:'both' },
+    { date:'2026-05-31', end:null,         label:'Buyer invitations sent',           owner:'max' },
+    { date:'2026-06-08', end:null,         label:'Production F\u00e8s finalised',    owner:'noam' },
+    { date:'2026-06-11', end:'2026-06-12', label:'SS27 photoshoot Paris',            owner:'noam' },
+    { date:'2026-06-23', end:'2026-06-28', label:'Showroom opens \u2014 PFW',        owner:'both' },
+  ];
+
+  var supporting = [
+    { date:'2026-05-24', end:null, label:'Branding doc / mood board / invite',     owner:'max' },
+    { date:'2026-05-27', end:null, label:'Buyer experience concept locked',        owner:'max' },
+    { date:'2026-05-31', end:null, label:'Wholesale pricing / MOQs / terms',       owner:'max' },
+    { date:'2026-06-05', end:null, label:'Buyer outreach status per account',      owner:'max' },
+    { date:'2026-06-15', end:null, label:'Line sheet / order form final',          owner:'max' },
+    { date:'2026-06-16', end:null, label:'Archive booklet sent to print',          owner:'both' },
+    { date:'2026-06-22', end:null, label:'Booklet delivered / showroom setup',     owner:'both' },
+  ];
+
+  var dateTicks = [];
+  var d = new Date(START);
+  while (d <= END) {
+    dateTicks.push({ date: new Date(d), offset: (d - START) / 864e5 });
+    d.setDate(d.getDate() + 7);
   }
+
+  var now = new Date();
+  var todayOff = Math.max(0, Math.min(totalDays, (now - START) / 864e5));
+  var pfwStartOff = dayOff('2026-06-23');
+  var pfwEndOff = dayOff('2026-06-28') + 1;
+
+  function makeRow(item) {
+    var s = dayOff(item.date);
+    var e = item.end ? dayOff(item.end) + 1 : s + 0.8;
+    var w = Math.max(e - s, 0.8);
+    var cls = 'gantt-bar owner-' + item.owner;
+    var isPast = new Date(item.end || item.date) < now;
+    if (isPast) cls += ' is-past';
+    return '<div class="gantt-row">' +
+      '<div class="gantt-row-label">' + item.label + '</div>' +
+      '<div class="gantt-row-bar-area">' +
+        '<div class="' + cls + '" style="left:' + pct(s) + ';width:' + pct(w) + ';min-width:10px;">' +
+          item.owner.toUpperCase() +
+        '</div>' +
+      '</div></div>';
+  }
+
+  var html = '';
+
+  html += '<div style="position:relative; margin-left:200px; padding-bottom: 28px;">';
+  dateTicks.forEach(function(t) {
+    var label = t.date.toLocaleDateString('en-GB', { month:'short', day:'numeric' });
+    html += '<div class="gantt-date-tick" style="left:' + pct(t.offset) + ';">' + label + '</div>';
+  });
+  html += '<div style="position:absolute; top:20px; left:0; right:0; height:1px; background:var(--border);"></div>';
+  html += '</div>';
+
+  html += '<div style="position:relative;">';
+  html += '<div class="gantt-section-label">Critical</div>';
+
+  html += '<div style="position:relative;">';
+  html += '<div class="gantt-today-line" style="left:calc(200px + ' + pct(todayOff) + ');height:100%;">';
+  html += '<div class="gantt-today-label">today</div></div>';
+
+  html += '<div class="gantt-pfw-band" style="left:calc(200px + ' + pct(pfwStartOff) + ');width:' + pct(pfwEndOff - pfwStartOff) + ';">';
+  html += '<div class="gantt-pfw-label">PFW</div></div>';
+
+  critical.forEach(function(item) { html += makeRow(item); });
+
+  html += '<div class="gantt-divider"></div>';
+  html += '<div class="gantt-section-label">Supporting</div>';
+  supporting.forEach(function(item) { html += makeRow(item); });
+  html += '</div></div>';
+
+  document.getElementById('ganttChart').innerHTML = html;
+})();
+
+document.addEventListener('DOMContentLoaded', function() {
+  var now = new Date();
+  var headerDate = document.getElementById('headerDate');
+  var headerWeek = document.getElementById('headerWeek');
+
+  headerDate.textContent = now.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+
+  var weeks = [
+    { id:'wk1', start: new Date(2026,3,28), end: new Date(2026,4,2) },
+    { id:'wk2', start: new Date(2026,4,5),  end: new Date(2026,4,9) },
+    { id:'wk3', start: new Date(2026,4,12), end: new Date(2026,4,16) },
+    { id:'wk4', start: new Date(2026,4,19), end: new Date(2026,4,23) },
+    { id:'wk5', start: new Date(2026,4,26), end: new Date(2026,4,30) },
+    { id:'wk6', start: new Date(2026,5,2),  end: new Date(2026,5,6) },
+    { id:'wk7', start: new Date(2026,5,9),  end: new Date(2026,5,13) },
+    { id:'wk8', start: new Date(2026,5,16), end: new Date(2026,5,20) },
+    { id:'wk9', start: new Date(2026,5,23), end: new Date(2026,5,28) },
+  ];
+
+  var currentWkNum = null;
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  weeks.forEach(function(wk, i) {
+    var el = document.getElementById(wk.id);
+    if (!el) return;
+    var block = el;
+    var tag = block.querySelector('.week-tag');
+    var isPast = today > wk.end;
+    var isCurrent = today >= wk.start && today <= wk.end;
+    var isFuture = today < wk.start;
+
+    block.classList.remove('done', 'urgent');
+    if (tag) tag.remove();
+
+    var heading = block.querySelector('.tl-heading');
+    var content = block.querySelector('.tl-content');
+    content.style.opacity = '';
+
+    if (isPast) {
+      block.classList.add('done');
+      content.style.opacity = '0.5';
+      if (heading) heading.insertAdjacentHTML('beforeend', '');
+    } else if (isCurrent) {
+      block.classList.add('urgent');
+      currentWkNum = i + 1;
+      if (heading) heading.insertAdjacentHTML('beforeend', '');
+    } else if (isFuture && i === weeks.findIndex(function(w) { return today < w.start; })) {
+      if (heading) heading.insertAdjacentHTML('beforeend', '');
+    }
+  });
+
+  if (!currentWkNum) {
+    if (today < weeks[0].start) currentWkNum = 1;
+    else if (today > weeks[weeks.length-1].end) currentWkNum = 9;
+    else {
+      for (var i = 0; i < weeks.length - 1; i++) {
+        if (today > weeks[i].end && today < weeks[i+1].start) { currentWkNum = i + 2; break; }
+      }
+    }
+  }
+
+  headerWeek.textContent = 'Week ' + (currentWkNum || '?') + ' of 9';
+
+  var scrollTarget = null;
+  for (var j = 0; j < weeks.length; j++) {
+    if (today >= weeks[j].start && today <= weeks[j].end) { scrollTarget = weeks[j].id; break; }
+  }
+  if (!scrollTarget) {
+    for (var k = 0; k < weeks.length; k++) {
+      if (today < weeks[k].start) { scrollTarget = weeks[k].id; break; }
+    }
+  }
+  if (scrollTarget) {
+    var el = document.getElementById(scrollTarget);
+    if (el) setTimeout(function() { el.scrollIntoView({ behavior:'smooth', block:'nearest' }); }, 300);
+  }
+});
 </script>
 </body>
 </html>
